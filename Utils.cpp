@@ -19,7 +19,7 @@ System::String^ Utils::toSystemString(std::string string)
 	return gcnew String(string.c_str());
 }
 bool Utils::isConfirmed(System::String^ question) {
-	return MessageBox::Show(L"Quit without saving?", L"Confirm",
+	return MessageBox::Show(question, L"Confirm",
 		MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes;
 }
 	

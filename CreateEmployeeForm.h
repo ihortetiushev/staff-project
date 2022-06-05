@@ -38,6 +38,7 @@ namespace coursework {
 			}
 		}
 	private: Repository* repo;
+	private: bool unsavedChanges = true;
 	private: System::Windows::Forms::Label^ firstNameLabel;
 	private: System::Windows::Forms::TextBox^ firstNameInput;
 	protected:
@@ -201,6 +202,8 @@ namespace coursework {
 		Employee toCreate = toModel();
 		try {
 			repo->createEmployee(toCreate);
+			unsavedChanges = false;
+			CreateEmployee::Close();
 		}
 		catch (std::invalid_argument& error) {
 			MessageBox::Show(Utils::toSystemString(error.what()), L"Error saving data", MessageBoxButtons::OK, MessageBoxIcon::Error);
@@ -219,7 +222,7 @@ namespace coursework {
 		return employee;
 	}
 	private: System::Void CreateEmployee_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
-		if (!Utils::isConfirmed(L"Quit without saving?")) {
+		if (unsavedChanges && !Utils::isConfirmed(L"Quit without saving?")) {
 			e->Cancel = true;
 		}
 	}

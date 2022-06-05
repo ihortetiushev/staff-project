@@ -203,14 +203,25 @@ namespace coursework {
 #pragma endregion
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 		table = gcnew DataTable();
-		table->Columns->Add(gcnew DataColumn("FirstName", Type::GetType("System.String")));
-		table->Columns->Add(gcnew DataColumn("SecondName", Type::GetType("System.String")));
+		table->Columns->Add(gcnew DataColumn("First Name", Type::GetType("System.String")));
+		table->Columns->Add(gcnew DataColumn("Second Name", Type::GetType("System.String")));
+		table->Columns->Add(gcnew DataColumn("Id Code", Type::GetType("System.String")));
+		table->Columns->Add(gcnew DataColumn("Birth Date", Type::GetType("System.String")));
 
 
 		/*Связать таблицу с dataGridView*/
 		dataGridView1->DataSource = table; // Сама связь
 		dataGridView1->Columns[0]->AutoSizeMode = DataGridViewAutoSizeColumnMode::Fill; // Это украшение(авто размер)
 		dataGridView1->Columns[1]->AutoSizeMode = DataGridViewAutoSizeColumnMode::Fill; // Это украшение(авто размер)
+		std::vector<Employee> allRecords = this -> repo->findAll();
+		for (auto emp : allRecords) {
+			array<System::Object^>^ values = gcnew array< System::Object^ >(4);
+			values[0] = Utils::toSystemString(emp.getFirstName());
+			values[1] = Utils::toSystemString(emp.getLastName());
+			values[2] = Utils::toSystemString(emp.getIdCode());
+			values[3] = Utils::toSystemString(emp.getBirthDate());
+			table->LoadDataRow(values, true);
+		}
 
 		/*array<System::Object^>^ values = gcnew array< System::Object^ >(2);
 		values[0] = "John";
@@ -225,7 +236,9 @@ namespace coursework {
 		DS->WriteXml("C:\\temp\\1.xml");*/
 
 		/*Загружаем из файла*/
-		DataSet^ DS = gcnew DataSet();
+
+
+		/*DataSet^ DS = gcnew DataSet();
 		try
 		{
 			DS->Tables->Clear();
@@ -235,7 +248,9 @@ namespace coursework {
 		catch (System::Exception^ e)
 		{
 			MessageBox::Show("Ошибка чтение xml");
-		}
+		}*/
+
+
 		/*Запись в файл*/
 		/*DS->Tables->Clear();
 		MyTable = (DataTable^)dataGridView1->DataSource;
@@ -256,11 +271,12 @@ namespace coursework {
 		}*/
 	}
 	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
-		DataSet^ DS = gcnew DataSet();
+		/*DataSet^ DS = gcnew DataSet();
 		DS->Tables->Clear();
 		DataTable^ table = (DataTable^)dataGridView1->DataSource;
 		DS->Tables->Add(table);
-		DS->WriteXml("C:\\temp\\1.xml");
+		DS->WriteXml("C:\\temp\\1.xml");*/
+		this->repo->readEmpolyeesFromFile();
 
 	}
 	private: System::Void exitToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -271,7 +287,7 @@ namespace coursework {
 		createEmployeeDlg.ShowDialog();
 	}
 	private: System::Void MainForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
-		if (!Utils::isConfirmed(L"Exis application?")) {
+		if (!Utils::isConfirmed(L"Exit application?")) {
 			e->Cancel = true;
 		}
 	}
