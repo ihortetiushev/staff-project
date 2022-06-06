@@ -1,5 +1,5 @@
 #pragma once
-#include "CreateEmployeeForm.h"
+#include "ManageEmployeeForm.h"
 #include "Repository.h"
 #include "Utils.h"
 
@@ -346,8 +346,8 @@ namespace coursework {
 		Application::Exit();
 	}
 	private: System::Void newEmployeeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-		CreateEmployee createEmployeeDlg(this->repo, nullptr);
-		createEmployeeDlg.ShowDialog();
+		ManageEmployee manageEmployeeDlg(this->repo, nullptr);
+		manageEmployeeDlg.ShowDialog();
 	}
 	private: System::Void MainForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
 		if (!Utils::isConfirmed(L"Exit application?")) {
@@ -369,8 +369,8 @@ namespace coursework {
 		}
 		Object^ objId = activeGrid->CurrentRow->Cells[0]->Value;
 		Employee toEdit = this->repo->getById(safe_cast<int>(objId));
-		CreateEmployee createEmployeeDlg(this->repo, &toEdit);
-		createEmployeeDlg.ShowDialog();
+		ManageEmployee mangeEmployeeDlg(this->repo, &toEdit);
+		mangeEmployeeDlg.ShowDialog();
 	}
 };
 }

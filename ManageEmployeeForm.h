@@ -16,10 +16,10 @@ namespace coursework {
 	/// <summary>
 	/// Summary for CreateEmployee
 	/// </summary>
-	public ref class CreateEmployee : public System::Windows::Forms::Form
+	public ref class ManageEmployee : public System::Windows::Forms::Form
 	{
 	public:
-		CreateEmployee(Repository* repo, Employee* toEdit)
+		ManageEmployee(Repository* repo, Employee* toEdit)
 		{
 			InitializeComponent();
 			this->StartPosition = FormStartPosition::CenterParent;
@@ -32,7 +32,7 @@ namespace coursework {
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		~CreateEmployee()
+		~ManageEmployee()
 		{
 			if (components)
 			{
@@ -127,7 +127,7 @@ namespace coursework {
 			this->okButton->TabIndex = 8;
 			this->okButton->Text = L"Ok";
 			this->okButton->UseVisualStyleBackColor = true;
-			this->okButton->Click += gcnew System::EventHandler(this, &CreateEmployee::okButton_Click);
+			this->okButton->Click += gcnew System::EventHandler(this, &ManageEmployee::okButton_Click);
 			// 
 			// cancelButton
 			// 
@@ -137,7 +137,7 @@ namespace coursework {
 			this->cancelButton->TabIndex = 9;
 			this->cancelButton->Text = L"Cancel";
 			this->cancelButton->UseVisualStyleBackColor = true;
-			this->cancelButton->Click += gcnew System::EventHandler(this, &CreateEmployee::cancelButton_Click);
+			this->cancelButton->Click += gcnew System::EventHandler(this, &ManageEmployee::cancelButton_Click);
 			// 
 			// idCodeLabel
 			// 
@@ -192,21 +192,27 @@ namespace coursework {
 			this->MinimumSize = System::Drawing::Size(500, 500);
 			this->Name = L"CreateEmployee";
 			this->Text = L"Create New Employee";
-			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &CreateEmployee::CreateEmployee_FormClosing);
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &ManageEmployee::CreateEmployee_FormClosing);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
 	private: System::Void cancelButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		CreateEmployee::Close();
+		ManageEmployee::Close();
 	}
-	private: System::Void okButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		Employee toCreate = toModel();
+    private: void saveEmployee() {
+		Employee employee = toModel();
 		try {
-			repo->createEmployee(toCreate);
+			if (this->toEdit == nullptr) {
+				//create mode
+				repo->createEmployee(employee);
+			} else {
+				//edit mode
+				repo->updateEmployee(employee);
+			}
 			unsavedChanges = false;
-			CreateEmployee::Close();
+			ManageEmployee::Close();
 		}
 		catch (std::invalid_argument& error) {
 			MessageBox::Show(Utils::toSystemString(error.what()), L"Error saving data", MessageBoxButtons::OK, MessageBoxIcon::Error);
@@ -216,14 +222,23 @@ namespace coursework {
 			MessageBox::Show(L"Error saving data " + e->Message);
 		}
 	}
+	private: System::Void okButton_Click(System::Object^ sender, System::EventArgs^ e) {
+		saveEmployee();		
+	}
 	private: Employee toModel() {
 		Employee employee;
+		if (this->toEdit != nullptr) {
+			employee = *toEdit;
+		}
+		else {
+			employee.setId(0);
+			employee.setDeleted(false);
+		}
 		employee.setFirstName(Utils::toStandardString(this->firstNameInput->Text));
 		employee.setLastName(Utils::toStandardString(this->lastNameInput->Text));
 		employee.setIdCode(Utils::toStandardString(this->idCodeInput->Text));
 		employee.setBirthDate(Utils::toStandardString(this->birthDatePicker->Text));
-		employee.setDeleted(false);
-		employee.setId(0);
+		
 		return employee;
 	}
 	private: System::Void CreateEmployee_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {

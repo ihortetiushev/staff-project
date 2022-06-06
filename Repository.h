@@ -12,11 +12,12 @@ const std::string EMPLOYEES_DATA = "empoyees.dat";
 class Repository {
 private:
 	std::map<int, Employee> empolyees;
-	void validateEmployeeToCreate(Employee toCreate);
+	void validateEmployee(Employee employee);
 	void validateMandatoryField(std::string fieldName, std::string fieldValue, std::size_t minLength, std::size_t maxLength);
 	void saveEmpolyeesToFile(std::string fileName);
 public:
 	Employee createEmployee(Employee toCreate);
+	Employee updateEmployee(Employee toUpdate);
 	void readEmpolyeesFromFile();
 	std::vector<Employee> findAll();
 	Employee getById(int id);

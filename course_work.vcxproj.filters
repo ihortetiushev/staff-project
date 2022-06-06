@@ -38,7 +38,7 @@
     <ClInclude Include="MainForm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CreateEmployeeForm.h">
+    <ClInclude Include="ManageEmployeeForm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Employee.h">

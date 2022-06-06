@@ -128,7 +128,7 @@
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CreateEmployeeForm.h">
+    <ClInclude Include="ManageEmployeeForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="Employee.h" />
@@ -139,8 +139,8 @@
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CreateEmployeeForm.resx">
-      <DependentUpon>CreateEmployeeForm.h</DependentUpon>
+    <EmbeddedResource Include="ManageEmployeeForm.resx">
+      <DependentUpon>ManageEmployeeForm.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.h</DependentUpon>

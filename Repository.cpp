@@ -6,19 +6,24 @@
 #include <vector>
 
 
-bool isExistsByIdCode(std::map<int, Employee> data, std::string idCode) {
+Employee* findByByIdCode(std::map<int, Employee> & data, std::string idCode) {
+	Employee* found = NULL;
 	for (auto& it : data) {
 		if (it.second.getIdCode() == idCode) {
-			return true;
+			found = &((it).second);
+			break;
 		}
 	}
-	return false;
+	return found;
 }
 
 Employee Repository::createEmployee(Employee toCreate) {
-
-	validateEmployeeToCreate(toCreate);
-	if (isExistsByIdCode(empolyees, toCreate.getIdCode())) {
+	validateEmployee(toCreate);
+	if (toCreate.getId() != 0) {
+		throw std::invalid_argument("Id must not be passed (should be 0)");
+	}
+	Employee* existing = findByByIdCode(empolyees, toCreate.getIdCode());
+	if (existing!=nullptr) {
 		throw std::invalid_argument("Employee with this id code already exists");
 	}
 	toCreate.setId(empolyees.size() + 1);
@@ -27,14 +32,24 @@ Employee Repository::createEmployee(Employee toCreate) {
 	return toCreate;
 }
 
-void Repository::validateEmployeeToCreate(Employee toCreate) {
-	if (toCreate.getId()!= 0) {
-		throw std::invalid_argument("Id must not be passed (should be 0)");
+Employee Repository::updateEmployee(Employee toUpdate) {
+	if (empolyees.find(toUpdate.getId()) == empolyees.end()) {
+		throw std::invalid_argument("No data found being edited");
 	}
-	std::string code = toCreate.getIdCode();
-	validateMandatoryField("Id Code", toCreate.getIdCode(), ID_CODE_MIN_LENGTH, ID_CODE_MAX_LENGTH);
-	validateMandatoryField("First Name", toCreate.getFirstName(), ID_CODE_NAME_MIN_LENGTH, ID_CODE_NAME_MAX_LENGTH);
-	validateMandatoryField("Last Name", toCreate.getLastName(), ID_CODE_NAME_MIN_LENGTH, ID_CODE_NAME_MAX_LENGTH);
+	validateEmployee(toUpdate);
+	Employee* existing = findByByIdCode(empolyees, toUpdate.getIdCode());
+	if (existing != nullptr && existing->getId() != toUpdate.getId()) {
+		throw std::invalid_argument("Another employee with this id code already exists");
+	}
+	empolyees[toUpdate.getId()] = toUpdate;
+	saveEmpolyeesToFile(EMPLOYEES_DATA);
+	return toUpdate;
+}
+
+void Repository::validateEmployee(Employee employee) {
+	validateMandatoryField("Id Code", employee.getIdCode(), ID_CODE_MIN_LENGTH, ID_CODE_MAX_LENGTH);
+	validateMandatoryField("First Name", employee.getFirstName(), ID_CODE_NAME_MIN_LENGTH, ID_CODE_NAME_MAX_LENGTH);
+	validateMandatoryField("Last Name", employee.getLastName(), ID_CODE_NAME_MIN_LENGTH, ID_CODE_NAME_MAX_LENGTH);
 }
 
 void Repository::validateMandatoryField(std::string fieldName, std::string fieldValue, std::size_t minLength, std::size_t maxLength) {
