@@ -95,7 +95,7 @@ void Repository::readEmpolyeesFromFile() {
 		int dataSize = readIntFromFile(file);
 		this->empolyees.clear();
 		for (int i = 0; i < dataSize; i++) {
-			//now length of idCode
+			//now length of string/ then actual string
 			Employee next;
 			int id = readIntFromFile(file);
 			next.setId(id);
@@ -127,4 +127,11 @@ std::vector<Employee> Repository::findAll() {
 		all.push_back(it.second);
 	}
 	return all;
+}
+Employee Repository::getById(int id) {
+	auto found = this->empolyees.find(id);
+	if (found == empolyees.end()) {
+		throw std::runtime_error("no data found");
+	}
+	return found->second;
 }

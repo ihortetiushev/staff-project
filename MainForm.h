@@ -34,19 +34,16 @@ namespace coursework {
 			}
 		}
 
-	private: Repository* repo;
+	private: 
+		Repository* repo;
+		DataTable^ tableActive;
+		DataTable^ tableDeleted;
 	protected:
-
-
-
-
-
 
 
 
 	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::Button^ button2;
-	private: DataTable^ table;
 	private: System::Windows::Forms::MenuStrip^ menuStrip1;
 	private: System::Windows::Forms::ToolStripMenuItem^ systemToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ exitToolStripMenuItem;
@@ -54,27 +51,13 @@ namespace coursework {
 	private: System::Windows::Forms::ToolStripMenuItem^ newEmployeeToolStripMenuItem;
 	private: System::Windows::Forms::MenuStrip^ menuStrip2;
 	private: System::Windows::Forms::ToolStripMenuItem^ editEmployeeToolStripMenuItem;
-	private: System::Windows::Forms::DataGridView^ dataGridView1;
+	private: System::Windows::Forms::DataGridView^ dataGridActive;
 	private: System::Windows::Forms::SplitContainer^ splitContainer1;
-	private: System::Windows::Forms::TabControl^ tabControl1;
-	private: System::Windows::Forms::TabPage^ tabPage1;
-	private: System::Windows::Forms::TabPage^ tabPage2;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	private: System::Windows::Forms::TabControl^ tabControl;
+	private: System::Windows::Forms::TabPage^ tabPageActive;
+	private: System::Windows::Forms::TabPage^ tabPageDeleted;
+	private: System::Windows::Forms::DataGridView^ dataGridDeleted;
 	private: System::ComponentModel::IContainer^ components;
-
 	private:
 		/// <summary>
 		/// Required designer variable.
@@ -97,19 +80,22 @@ namespace coursework {
 			this->newEmployeeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->editEmployeeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->menuStrip2 = (gcnew System::Windows::Forms::MenuStrip());
-			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
+			this->dataGridActive = (gcnew System::Windows::Forms::DataGridView());
 			this->splitContainer1 = (gcnew System::Windows::Forms::SplitContainer());
-			this->tabControl1 = (gcnew System::Windows::Forms::TabControl());
-			this->tabPage1 = (gcnew System::Windows::Forms::TabPage());
-			this->tabPage2 = (gcnew System::Windows::Forms::TabPage());
+			this->tabControl = (gcnew System::Windows::Forms::TabControl());
+			this->tabPageActive = (gcnew System::Windows::Forms::TabPage());
+			this->tabPageDeleted = (gcnew System::Windows::Forms::TabPage());
+			this->dataGridDeleted = (gcnew System::Windows::Forms::DataGridView());
 			this->menuStrip2->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridActive))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->splitContainer1))->BeginInit();
 			this->splitContainer1->Panel1->SuspendLayout();
 			this->splitContainer1->Panel2->SuspendLayout();
 			this->splitContainer1->SuspendLayout();
-			this->tabControl1->SuspendLayout();
-			this->tabPage1->SuspendLayout();
+			this->tabControl->SuspendLayout();
+			this->tabPageActive->SuspendLayout();
+			this->tabPageDeleted->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridDeleted))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// button1
@@ -168,14 +154,14 @@ namespace coursework {
 			// newEmployeeToolStripMenuItem
 			// 
 			this->newEmployeeToolStripMenuItem->Name = L"newEmployeeToolStripMenuItem";
-			this->newEmployeeToolStripMenuItem->Size = System::Drawing::Size(192, 26);
+			this->newEmployeeToolStripMenuItem->Size = System::Drawing::Size(224, 26);
 			this->newEmployeeToolStripMenuItem->Text = L"New Employee";
 			this->newEmployeeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::newEmployeeToolStripMenuItem_Click);
 			// 
 			// editEmployeeToolStripMenuItem
 			// 
 			this->editEmployeeToolStripMenuItem->Name = L"editEmployeeToolStripMenuItem";
-			this->editEmployeeToolStripMenuItem->Size = System::Drawing::Size(192, 26);
+			this->editEmployeeToolStripMenuItem->Size = System::Drawing::Size(224, 26);
 			this->editEmployeeToolStripMenuItem->Text = L"Edit Employee";
 			this->editEmployeeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::editEmployeeToolStripMenuItem_Click);
 			// 
@@ -192,25 +178,26 @@ namespace coursework {
 			this->menuStrip2->TabIndex = 4;
 			this->menuStrip2->Text = L"menuStrip2";
 			// 
-			// dataGridView1
+			// dataGridActive
 			// 
-			this->dataGridView1->AllowUserToAddRows = false;
-			this->dataGridView1->AllowUserToDeleteRows = false;
-			this->dataGridView1->AllowUserToOrderColumns = true;
-			this->dataGridView1->AutoSizeColumnsMode = System::Windows::Forms::DataGridViewAutoSizeColumnsMode::Fill;
-			this->dataGridView1->BackgroundColor = System::Drawing::SystemColors::ButtonFace;
-			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->dataGridView1->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->dataGridView1->EditMode = System::Windows::Forms::DataGridViewEditMode::EditOnEnter;
-			this->dataGridView1->Location = System::Drawing::Point(3, 3);
-			this->dataGridView1->MinimumSize = System::Drawing::Size(300, 70);
-			this->dataGridView1->Name = L"dataGridView1";
-			this->dataGridView1->ReadOnly = true;
-			this->dataGridView1->RowHeadersWidth = 51;
-			this->dataGridView1->RowTemplate->Height = 24;
-			this->dataGridView1->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->dataGridView1->Size = System::Drawing::Size(908, 324);
-			this->dataGridView1->TabIndex = 0;
+			this->dataGridActive->AllowUserToAddRows = false;
+			this->dataGridActive->AllowUserToDeleteRows = false;
+			this->dataGridActive->AutoSizeColumnsMode = System::Windows::Forms::DataGridViewAutoSizeColumnsMode::Fill;
+			this->dataGridActive->BackgroundColor = System::Drawing::SystemColors::ButtonFace;
+			this->dataGridActive->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dataGridActive->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->dataGridActive->EditMode = System::Windows::Forms::DataGridViewEditMode::EditProgrammatically;
+			this->dataGridActive->Location = System::Drawing::Point(3, 3);
+			this->dataGridActive->MinimumSize = System::Drawing::Size(300, 70);
+			this->dataGridActive->MultiSelect = false;
+			this->dataGridActive->Name = L"dataGridActive";
+			this->dataGridActive->ReadOnly = true;
+			this->dataGridActive->RowHeadersWidth = 51;
+			this->dataGridActive->RowTemplate->Height = 24;
+			this->dataGridActive->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
+			this->dataGridActive->SelectionMode = System::Windows::Forms::DataGridViewSelectionMode::FullRowSelect;
+			this->dataGridActive->Size = System::Drawing::Size(908, 324);
+			this->dataGridActive->TabIndex = 0;
 			// 
 			// splitContainer1
 			// 
@@ -227,42 +214,60 @@ namespace coursework {
 			// 
 			// splitContainer1.Panel2
 			// 
-			this->splitContainer1->Panel2->Controls->Add(this->tabControl1);
+			this->splitContainer1->Panel2->Controls->Add(this->tabControl);
 			this->splitContainer1->Size = System::Drawing::Size(926, 566);
 			this->splitContainer1->SplitterDistance = 199;
 			this->splitContainer1->TabIndex = 5;
 			// 
-			// tabControl1
+			// tabControl
 			// 
-			this->tabControl1->Controls->Add(this->tabPage1);
-			this->tabControl1->Controls->Add(this->tabPage2);
-			this->tabControl1->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->tabControl1->Location = System::Drawing::Point(0, 0);
-			this->tabControl1->Name = L"tabControl1";
-			this->tabControl1->SelectedIndex = 0;
-			this->tabControl1->Size = System::Drawing::Size(922, 359);
-			this->tabControl1->TabIndex = 0;
+			this->tabControl->Controls->Add(this->tabPageActive);
+			this->tabControl->Controls->Add(this->tabPageDeleted);
+			this->tabControl->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->tabControl->Location = System::Drawing::Point(0, 0);
+			this->tabControl->Name = L"tabControl";
+			this->tabControl->SelectedIndex = 0;
+			this->tabControl->Size = System::Drawing::Size(922, 359);
+			this->tabControl->TabIndex = 0;
 			// 
-			// tabPage1
+			// tabPageActive
 			// 
-			this->tabPage1->Controls->Add(this->dataGridView1);
-			this->tabPage1->Location = System::Drawing::Point(4, 25);
-			this->tabPage1->Name = L"tabPage1";
-			this->tabPage1->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage1->Size = System::Drawing::Size(914, 330);
-			this->tabPage1->TabIndex = 0;
-			this->tabPage1->Text = L"Active";
-			this->tabPage1->UseVisualStyleBackColor = true;
+			this->tabPageActive->Controls->Add(this->dataGridActive);
+			this->tabPageActive->Location = System::Drawing::Point(4, 25);
+			this->tabPageActive->Name = L"tabPageActive";
+			this->tabPageActive->Padding = System::Windows::Forms::Padding(3);
+			this->tabPageActive->Size = System::Drawing::Size(914, 330);
+			this->tabPageActive->TabIndex = 0;
+			this->tabPageActive->Text = L"Active";
+			this->tabPageActive->UseVisualStyleBackColor = true;
 			// 
-			// tabPage2
+			// tabPageDeleted
 			// 
-			this->tabPage2->Location = System::Drawing::Point(4, 25);
-			this->tabPage2->Name = L"tabPage2";
-			this->tabPage2->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage2->Size = System::Drawing::Size(916, 332);
-			this->tabPage2->TabIndex = 1;
-			this->tabPage2->Text = L"Deleted";
-			this->tabPage2->UseVisualStyleBackColor = true;
+			this->tabPageDeleted->Controls->Add(this->dataGridDeleted);
+			this->tabPageDeleted->Location = System::Drawing::Point(4, 25);
+			this->tabPageDeleted->Name = L"tabPageDeleted";
+			this->tabPageDeleted->Padding = System::Windows::Forms::Padding(3);
+			this->tabPageDeleted->Size = System::Drawing::Size(914, 330);
+			this->tabPageDeleted->TabIndex = 1;
+			this->tabPageDeleted->Text = L"Deleted";
+			this->tabPageDeleted->UseVisualStyleBackColor = true;
+			// 
+			// dataGridDeleted
+			// 
+			this->dataGridDeleted->AllowUserToAddRows = false;
+			this->dataGridDeleted->AllowUserToDeleteRows = false;
+			this->dataGridDeleted->BackgroundColor = System::Drawing::SystemColors::ButtonFace;
+			this->dataGridDeleted->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dataGridDeleted->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->dataGridDeleted->Location = System::Drawing::Point(3, 3);
+			this->dataGridDeleted->MultiSelect = false;
+			this->dataGridDeleted->Name = L"dataGridDeleted";
+			this->dataGridDeleted->ReadOnly = true;
+			this->dataGridDeleted->RowHeadersWidth = 51;
+			this->dataGridDeleted->RowTemplate->Height = 24;
+			this->dataGridDeleted->SelectionMode = System::Windows::Forms::DataGridViewSelectionMode::FullRowSelect;
+			this->dataGridDeleted->Size = System::Drawing::Size(908, 324);
+			this->dataGridDeleted->TabIndex = 0;
 			// 
 			// MainForm
 			// 
@@ -278,86 +283,55 @@ namespace coursework {
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &MainForm::MainForm_FormClosing);
 			this->menuStrip2->ResumeLayout(false);
 			this->menuStrip2->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridActive))->EndInit();
 			this->splitContainer1->Panel1->ResumeLayout(false);
 			this->splitContainer1->Panel2->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->splitContainer1))->EndInit();
 			this->splitContainer1->ResumeLayout(false);
-			this->tabControl1->ResumeLayout(false);
-			this->tabPage1->ResumeLayout(false);
+			this->tabControl->ResumeLayout(false);
+			this->tabPageActive->ResumeLayout(false);
+			this->tabPageDeleted->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridDeleted))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-		table = gcnew DataTable();
+		tableActive = createTable(dataGridActive);
+		tableDeleted = createTable(dataGridDeleted);
+		std::vector<Employee> allRecords = this -> repo->findAll();
+		for (auto &emp : allRecords) {
+			array<System::Object^>^ values = gcnew array< System::Object^ >(5);
+			values[0] = emp.getId();
+			values[1] = Utils::toSystemString(emp.getFirstName());
+			values[2] = Utils::toSystemString(emp.getLastName());
+			values[3] = Utils::toSystemString(emp.getIdCode());
+			values[4] = Utils::toSystemString(emp.getBirthDate());
+			if (emp.isDeleted()) {
+				tableDeleted->LoadDataRow(values, true);
+			}
+			else {
+				tableActive->LoadDataRow(values, true);
+			}
+		}
+			
+	}
+	private: DataTable^ createTable(System::Windows::Forms::DataGridView^ dataGrid) {
+		DataTable^ table = gcnew DataTable();
+		table->Columns->Add(gcnew DataColumn("Id", Type::GetType("System.Int32")));
 		table->Columns->Add(gcnew DataColumn("First Name", Type::GetType("System.String")));
 		table->Columns->Add(gcnew DataColumn("Second Name", Type::GetType("System.String")));
 		table->Columns->Add(gcnew DataColumn("Id Code", Type::GetType("System.String")));
 		table->Columns->Add(gcnew DataColumn("Birth Date", Type::GetType("System.String")));
 
-
-		/*Связать таблицу с dataGridView*/
-		dataGridView1->DataSource = table; // Сама связь
-		dataGridView1->Columns[0]->AutoSizeMode = DataGridViewAutoSizeColumnMode::Fill; // Это украшение(авто размер)
-		dataGridView1->Columns[1]->AutoSizeMode = DataGridViewAutoSizeColumnMode::Fill; // Это украшение(авто размер)
-		std::vector<Employee> allRecords = this -> repo->findAll();
-		for (auto emp : allRecords) {
-			array<System::Object^>^ values = gcnew array< System::Object^ >(4);
-			values[0] = Utils::toSystemString(emp.getFirstName());
-			values[1] = Utils::toSystemString(emp.getLastName());
-			values[2] = Utils::toSystemString(emp.getIdCode());
-			values[3] = Utils::toSystemString(emp.getBirthDate());
-			table->LoadDataRow(values, true);
-		}
-
-		/*array<System::Object^>^ values = gcnew array< System::Object^ >(2);
-		values[0] = "John";
-		values[1] = "Doe";
-		table->LoadDataRow(values, true);
-		values[0] = "John";
-		values[1] = "Smith";
-		table->LoadDataRow(values, true);*/
-		/*Сохраняем в xml*/
-		/*DataSet^ DS = gcnew DataSet();
-		DS->Tables->Add(MyTable);
-		DS->WriteXml("C:\\temp\\1.xml");*/
-
-		/*Загружаем из файла*/
-
-
-		/*DataSet^ DS = gcnew DataSet();
-		try
-		{
-			DS->Tables->Clear();
-			DS->ReadXml("C:\\temp\\1.xml");
-			dataGridView1->DataSource = DS->Tables[0];
-		}
-		catch (System::Exception^ e)
-		{
-			MessageBox::Show("Ошибка чтение xml");
-		}*/
-
-
-		/*Запись в файл*/
-		/*DS->Tables->Clear();
-		MyTable = (DataTable^)dataGridView1->DataSource;
-		DS->Tables->Add(MyTable);
-		DS->WriteXml("C:\\patch_list.xml");*/
-
-		/*Чтение из файла*/
-		/*try
-		{
-			DS->Tables->Clear();
-			DS->ReadXml("C:\\patch_list.xml");
-			dataGridView1->DataSource = DS->Tables[0];
-			//dataGridView1->Refresh();
-		}
-		catch (System::Exception^ e)
-		{
-			MessageBox::Show("XML data read error");
-		}*/
+		dataGrid->DataSource = table;
+		dataGrid->Columns[0]->Visible = false;//first column - id invisible
+		dataGrid->Columns[1]->AutoSizeMode = DataGridViewAutoSizeColumnMode::Fill;
+		dataGrid->Columns[2]->AutoSizeMode = DataGridViewAutoSizeColumnMode::Fill;
+		dataGrid->Columns[3]->AutoSizeMode = DataGridViewAutoSizeColumnMode::Fill;
+		dataGrid->Columns[4]->AutoSizeMode = DataGridViewAutoSizeColumnMode::Fill;
+		return table;
 	}
 	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
 		/*DataSet^ DS = gcnew DataSet();
@@ -372,7 +346,7 @@ namespace coursework {
 		Application::Exit();
 	}
 	private: System::Void newEmployeeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-		CreateEmployee createEmployeeDlg(this->repo);
+		CreateEmployee createEmployeeDlg(this->repo, nullptr);
 		createEmployeeDlg.ShowDialog();
 	}
 	private: System::Void MainForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
@@ -381,7 +355,22 @@ namespace coursework {
 		}
 	}
 	private: System::Void editEmployeeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-
+		DataGridView^ activeGrid;
+		if (tabControl->SelectedIndex == 0) {
+			activeGrid = this->dataGridActive;
+		}
+		else {
+			activeGrid = this->dataGridDeleted;
+		}
+		auto selected = activeGrid->SelectedRows;
+		if (selected->Count == 0) {
+			MessageBox::Show(L"No data selected for editing", L"Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+		Object^ objId = activeGrid->CurrentRow->Cells[0]->Value;
+		Employee toEdit = this->repo->getById(safe_cast<int>(objId));
+		CreateEmployee createEmployeeDlg(this->repo, &toEdit);
+		createEmployeeDlg.ShowDialog();
 	}
 };
 }

@@ -19,4 +19,5 @@ public:
 	Employee createEmployee(Employee toCreate);
 	void readEmpolyeesFromFile();
 	std::vector<Employee> findAll();
+	Employee getById(int id);
 };

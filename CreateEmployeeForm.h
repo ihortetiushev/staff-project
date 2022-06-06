@@ -19,11 +19,13 @@ namespace coursework {
 	public ref class CreateEmployee : public System::Windows::Forms::Form
 	{
 	public:
-		CreateEmployee(Repository* repo)
+		CreateEmployee(Repository* repo, Employee* toEdit)
 		{
 			InitializeComponent();
 			this->StartPosition = FormStartPosition::CenterParent;
 			this->repo = repo;
+			this->toEdit = toEdit;
+			populateEditingData();
 		}
 
 	protected:
@@ -38,6 +40,7 @@ namespace coursework {
 			}
 		}
 	private: Repository* repo;
+	private: Employee* toEdit;
 	private: bool unsavedChanges = true;
 	private: System::Windows::Forms::Label^ firstNameLabel;
 	private: System::Windows::Forms::TextBox^ firstNameInput;
@@ -219,11 +222,22 @@ namespace coursework {
 		employee.setLastName(Utils::toStandardString(this->lastNameInput->Text));
 		employee.setIdCode(Utils::toStandardString(this->idCodeInput->Text));
 		employee.setBirthDate(Utils::toStandardString(this->birthDatePicker->Text));
+		employee.setDeleted(false);
+		employee.setId(0);
 		return employee;
 	}
 	private: System::Void CreateEmployee_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
 		if (unsavedChanges && !Utils::isConfirmed(L"Quit without saving?")) {
 			e->Cancel = true;
+		}
+	}
+	private: void populateEditingData() {
+		if (this->toEdit != nullptr) {
+			this->Text = L"Edit Employee";
+			this->firstNameInput->Text = Utils::toSystemString(toEdit->getFirstName());
+			this->lastNameInput->Text = Utils::toSystemString(toEdit->getLastName());
+			this->idCodeInput->Text = Utils::toSystemString(toEdit->getIdCode());
+			this->birthDatePicker->Text = Utils::toSystemString(toEdit->getBirthDate());
 		}
 	}
 };
