@@ -53,6 +53,7 @@ namespace coursework {
 	private: System::Windows::Forms::ToolStripMenuItem^ staffToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ newEmployeeToolStripMenuItem;
 	private: System::Windows::Forms::MenuStrip^ menuStrip2;
+	private: System::Windows::Forms::ToolStripMenuItem^ editEmployeeToolStripMenuItem;
 
 
 
@@ -84,6 +85,7 @@ namespace coursework {
 			this->exitToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->staffToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->newEmployeeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->editEmployeeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->menuStrip2 = (gcnew System::Windows::Forms::MenuStrip());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->menuStrip2->SuspendLayout();
@@ -154,7 +156,10 @@ namespace coursework {
 			// 
 			// staffToolStripMenuItem
 			// 
-			this->staffToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->newEmployeeToolStripMenuItem });
+			this->staffToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+				this->newEmployeeToolStripMenuItem,
+					this->editEmployeeToolStripMenuItem
+			});
 			this->staffToolStripMenuItem->Name = L"staffToolStripMenuItem";
 			this->staffToolStripMenuItem->Size = System::Drawing::Size(54, 24);
 			this->staffToolStripMenuItem->Text = L"Staff";
@@ -162,9 +167,16 @@ namespace coursework {
 			// newEmployeeToolStripMenuItem
 			// 
 			this->newEmployeeToolStripMenuItem->Name = L"newEmployeeToolStripMenuItem";
-			this->newEmployeeToolStripMenuItem->Size = System::Drawing::Size(192, 26);
+			this->newEmployeeToolStripMenuItem->Size = System::Drawing::Size(224, 26);
 			this->newEmployeeToolStripMenuItem->Text = L"New Employee";
 			this->newEmployeeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::newEmployeeToolStripMenuItem_Click);
+			// 
+			// editEmployeeToolStripMenuItem
+			// 
+			this->editEmployeeToolStripMenuItem->Name = L"editEmployeeToolStripMenuItem";
+			this->editEmployeeToolStripMenuItem->Size = System::Drawing::Size(224, 26);
+			this->editEmployeeToolStripMenuItem->Text = L"Edit Employee";
+			this->editEmployeeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::editEmployeeToolStripMenuItem_Click);
 			// 
 			// menuStrip2
 			// 
@@ -291,5 +303,8 @@ namespace coursework {
 			e->Cancel = true;
 		}
 	}
-	};
+	private: System::Void editEmployeeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	}
+};
 }
