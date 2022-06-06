@@ -25,6 +25,7 @@ namespace coursework {
 			this->StartPosition = FormStartPosition::CenterParent;
 			this->repo = repo;
 			this->toEdit = toEdit;
+			
 			populateEditingData();
 		}
 
@@ -39,9 +40,11 @@ namespace coursework {
 				delete components;
 			}
 		}
-	private: Repository* repo;
-	private: Employee* toEdit;
-	private: bool unsavedChanges = true;
+	private: 
+		Repository* repo;
+		Employee* toEdit;
+		bool unsavedChanges = true;
+
 	private: System::Windows::Forms::Label^ firstNameLabel;
 	private: System::Windows::Forms::TextBox^ firstNameInput;
 	protected:

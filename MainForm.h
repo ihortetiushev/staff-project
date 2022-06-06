@@ -302,20 +302,24 @@ namespace coursework {
 		tableDeleted = createTable(dataGridDeleted);
 		std::vector<Employee> allRecords = this -> repo->findAll();
 		for (auto &emp : allRecords) {
-			array<System::Object^>^ values = gcnew array< System::Object^ >(5);
-			values[0] = emp.getId();
-			values[1] = Utils::toSystemString(emp.getFirstName());
-			values[2] = Utils::toSystemString(emp.getLastName());
-			values[3] = Utils::toSystemString(emp.getIdCode());
-			values[4] = Utils::toSystemString(emp.getBirthDate());
+			array<System::Object^>^ rowData = toRow(emp);
 			if (emp.isDeleted()) {
-				tableDeleted->LoadDataRow(values, true);
+				tableDeleted->LoadDataRow(rowData, true);
 			}
 			else {
-				tableActive->LoadDataRow(values, true);
+				tableActive->LoadDataRow(rowData, true);
 			}
 		}
 			
+	}
+    private: array<System::Object^>^ toRow(Employee emp) {
+		array<System::Object^>^ values = gcnew array< System::Object^ >(5);
+		values[0] = emp.getId();
+		values[1] = Utils::toSystemString(emp.getFirstName());
+		values[2] = Utils::toSystemString(emp.getLastName());
+		values[3] = Utils::toSystemString(emp.getIdCode());
+		values[4] = Utils::toSystemString(emp.getBirthDate());
+		return values;
 	}
 	private: DataTable^ createTable(System::Windows::Forms::DataGridView^ dataGrid) {
 		DataTable^ table = gcnew DataTable();
@@ -355,13 +359,7 @@ namespace coursework {
 		}
 	}
 	private: System::Void editEmployeeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-		DataGridView^ activeGrid;
-		if (tabControl->SelectedIndex == 0) {
-			activeGrid = this->dataGridActive;
-		}
-		else {
-			activeGrid = this->dataGridDeleted;
-		}
+		DataGridView^ activeGrid = getActiveGrid();
 		auto selected = activeGrid->SelectedRows;
 		if (selected->Count == 0) {
 			MessageBox::Show(L"No data selected for editing", L"Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
@@ -371,6 +369,35 @@ namespace coursework {
 		Employee toEdit = this->repo->getById(safe_cast<int>(objId));
 		ManageEmployee mangeEmployeeDlg(this->repo, &toEdit);
 		mangeEmployeeDlg.ShowDialog();
+		refreshGridData();
+		
+	}
+	private:  DataGridView^ getActiveGrid() {
+		DataGridView^ activeGrid;
+		if (tabControl->SelectedIndex == 0) {
+			activeGrid = this->dataGridActive;
+		}
+		else {
+			activeGrid = this->dataGridDeleted;
+		}
+		return activeGrid;
+	}
+    private: void refreshGridData() {
+		int id = 1;//todo read latest updated data
+		DataGridView^ activeGrid = getActiveGrid();
+		if (activeGrid->RowCount > 0){
+			for (int i = 0; i < activeGrid->RowCount; i++) {
+				auto idObj = activeGrid->Rows[i]->Cells[0]->Value;
+				if (id == safe_cast<int>(idObj)) {
+					Employee employee = this->repo->getById(id);
+					//update
+					//activeGrid->Rows[i]->Cells[2]->Value = Utils::toSystemString(employee.getLastName());
+					//delete
+					// activeGrid->Rows->RemoveAt(activeGrid->Rows[i]->Index);
+					break;
+				}
+			}
+		}
 	}
 };
 }
