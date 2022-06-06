@@ -5,27 +5,39 @@
 #include <fstream>
 #include <vector>
 
+
+bool isExistsByIdCode(std::map<int, Employee> data, std::string idCode) {
+	for (auto& it : data) {
+		if (it.second.getIdCode() == idCode) {
+			return true;
+		}
+	}
+	return false;
+}
+
 Employee Repository::createEmployee(Employee toCreate) {
 
 	validateEmployeeToCreate(toCreate);
-
-	auto found = this->empolyees.find(toCreate.getIdCode());
-	if (found != empolyees.end()) {
+	if (isExistsByIdCode(empolyees, toCreate.getIdCode())) {
 		throw std::invalid_argument("Employee with this id code already exists");
 	}
-	empolyees.insert({ toCreate.getIdCode() ,toCreate });
+	toCreate.setId(empolyees.size() + 1);
+	empolyees.insert({ toCreate.getId() ,toCreate });
 	saveEmpolyeesToFile(EMPLOYEES_DATA);
 	return toCreate;
 }
 
 void Repository::validateEmployeeToCreate(Employee toCreate) {
+	if (toCreate.getId()!= 0) {
+		throw std::invalid_argument("Id must not be passed (should be 0)");
+	}
 	std::string code = toCreate.getIdCode();
 	validateMandatoryField("Id Code", toCreate.getIdCode(), ID_CODE_MIN_LENGTH, ID_CODE_MAX_LENGTH);
 	validateMandatoryField("First Name", toCreate.getFirstName(), ID_CODE_NAME_MIN_LENGTH, ID_CODE_NAME_MAX_LENGTH);
 	validateMandatoryField("Last Name", toCreate.getLastName(), ID_CODE_NAME_MIN_LENGTH, ID_CODE_NAME_MAX_LENGTH);
 }
 
-void Repository::validateMandatoryField(std::string fieldName, std::string fieldValue, int minLength, int maxLength) {
+void Repository::validateMandatoryField(std::string fieldName, std::string fieldValue, std::size_t minLength, std::size_t maxLength) {
 	if (fieldValue.empty()) {
 		throw std::invalid_argument(fieldName + " must not be empty");
 	}
@@ -64,10 +76,12 @@ void Repository::saveEmpolyeesToFile(std::string fileName) {
 	int dataSize = empolyees.size();
 	writeIntToFile(dataSize, ofs);
 	for (auto &it : this->empolyees) {
+		writeIntToFile(it.second.getId(), ofs);
 		writeStringToFile(it.second.getIdCode(), ofs);
 		writeStringToFile(it.second.getFirstName(), ofs);
 		writeStringToFile(it.second.getLastName(), ofs);
 		writeStringToFile(it.second.getBirthDate(), ofs);
+		writeIntToFile(it.second.isDeleted(), ofs);
 	}
 	ofs.close();
 }
@@ -83,6 +97,8 @@ void Repository::readEmpolyeesFromFile() {
 		for (int i = 0; i < dataSize; i++) {
 			//now length of idCode
 			Employee next;
+			int id = readIntFromFile(file);
+			next.setId(id);
 			int strLength = readIntFromFile(file);
 			std::string idCode = readStringFromFile(file, strLength);
 			next.setIdCode(idCode);
@@ -95,7 +111,9 @@ void Repository::readEmpolyeesFromFile() {
 			strLength = readIntFromFile(file);
 			std::string birthDate = readStringFromFile(file, strLength);
 			next.setBirthDate(birthDate);
-			empolyees.insert({ next.getIdCode(), next });
+			bool isDeleted = readIntFromFile(file);
+			next.setDeleted(isDeleted);
+			empolyees.insert({ next.getId(), next });
 		}
 		file.close();
 	}
