@@ -52,6 +52,9 @@ namespace coursework {
 		DataTable^ tableActive;
 		DataTable^ tableDeleted;
 		UIState^ uiState;
+		int totalCount = 0;
+		int activeCount = 0;
+		int deletedCount = 0;
 	private: System::Windows::Forms::Button^ searchButton;
 	private: System::Windows::Forms::Button^ clearButton;
 	protected:
@@ -528,13 +531,17 @@ namespace coursework {
 		}
 		dataGridActive->Columns[ID_INDEX]->Visible = false;
 		dataGridDeleted->Columns[ID_INDEX]->Visible = false;
-		setStatusText(allRecords.size(), activeCount, deletedCount);
+		this->totalCount = allRecords.size();
+		this->activeCount = activeCount;
+		this->deletedCount = deletedCount;
+		setStatusText();
 	}
-	private:  void setStatusText(int totalCount, int activeCount, int deletedCount)
+	private: void setStatusText()
 	{
-		String^ totalText = "Total records: " + totalCount;
-		String^ activeText = " Active: " + activeCount;
-		String^ deletedText = " Deleted: " + deletedCount;
+
+		String^ totalText = "Total records: " + this->totalCount;
+		String^ activeText = " Active: " + this->activeCount;
+		String^ deletedText = " Deleted: " + this->deletedCount;
 		Color color;
 		if (totalCount == 0) {
 			color = Color::DarkRed;
@@ -586,6 +593,11 @@ namespace coursework {
 		UIState^ state = gcnew UIState();
 		ManageEmployee manageEmployeeDlg(this->repo, nullptr, state);
 		manageEmployeeDlg.ShowDialog();
+		if (state->getLastOperation() == Operation::CREATE) {
+			this->totalCount++;
+			this->activeCount++;
+			setStatusText();
+		}
 		refreshGridData(state);
 	}
 	private: System::Void MainForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
@@ -625,12 +637,16 @@ namespace coursework {
 			return;
 		}
 		Int32 id = state->getLastModifiedId();
+		Employee employee = this->repo->getById(id);
 		DataGridView^ activeGrid = getActiveGrid();
+		if(state->getLastOperation() == Operation::CREATE) {
+			addCreatedRecordToTable(employee);
+			return;
+		}
 		if (activeGrid->RowCount > 0) {
 			for (int i = 0; i < activeGrid->RowCount; i++) {
 				auto idObj = activeGrid->Rows[i]->Cells[ID_INDEX]->Value;
 				if (id.Equals(idObj)) {
-					Employee employee = this->repo->getById(id);
 					if (state->getLastOperation() == Operation::UPDATE) {
 						activeGrid->Rows[i]->Cells[FIRST_NAME_INDEX]->Value = Utils::toSystemString(employee.getFirstName());
 						activeGrid->Rows[i]->Cells[LAST_NAME_INDEX]->Value = Utils::toSystemString(employee.getLastName());
@@ -639,11 +655,20 @@ namespace coursework {
 					}
 					else if (state->getLastOperation() == Operation::DELETE) {
 						activeGrid->Rows->RemoveAt(activeGrid->Rows[i]->Index);
+						array<System::Object^>^ rowData = toRow(employee);
+						this->tableDeleted->LoadDataRow(rowData, true);
 					}
 					break;
 				}
 			}
 		}
+	}
+	private: void addCreatedRecordToTable(Employee employee) {
+		array<System::Object^>^ rowData = toRow(employee);
+		if (this->tableActive == nullptr) {
+			this->tableActive = createTable(dataGridActive);
+		}		
+		this->tableActive->LoadDataRow(rowData, true);
 	}
 	private: System::Void deleteEmployeeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 		deleteEmployee();
@@ -667,6 +692,10 @@ namespace coursework {
 			Employee deleted = repo->deleteEmployee(toDelete.getId());
 			uiState->setLastOperation(Operation::DELETE);
 			uiState->setLastModifiedId(deleted.getId());
+			if (this->activeCount != 0) {
+				this->activeCount--;
+				this->deletedCount++;
+			}
 		}
 		catch (std::invalid_argument& error) {
 			MessageBox::Show(Utils::toSystemString(error.what()), L"Error saving data", MessageBoxButtons::OK, MessageBoxIcon::Error);
@@ -676,6 +705,7 @@ namespace coursework {
 			MessageBox::Show(L"Error saving data " + e->Message);
 		}
 		refreshGridData(uiState);
+		setStatusText();
 	}
 	private: System::Void birthDatePicker_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
 		if (!birthDatePicker->Checked) {
@@ -696,6 +726,7 @@ namespace coursework {
 	}
 	private: System::Void deleteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 		deleteEmployee();
+		
 	}
 };
 }

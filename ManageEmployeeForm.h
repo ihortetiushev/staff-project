@@ -214,16 +214,17 @@ namespace coursework {
 		try {
 			if (this->toEdit == nullptr) {
 				//create mode
-				repo->createEmployee(employee);
+				Employee created = repo->createEmployee(employee);
 				uiState->setLastOperation(Operation::CREATE);
+				uiState->setLastModifiedId(created.getId());
 			}
 			else {
 				//edit mode
 				repo->updateEmployee(employee);
 				uiState->setLastOperation(Operation::UPDATE);
+				uiState->setLastModifiedId(employee.getId());
 			}
-			unsavedChanges = false;
-			uiState->setLastModifiedId(employee.getId());
+			unsavedChanges = false;			
 			ManageEmployee::Close();
 		}
 		catch (std::invalid_argument& error) {
