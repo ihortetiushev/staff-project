@@ -62,6 +62,10 @@ namespace coursework {
 
 
 	private: System::Windows::Forms::Label^ birthDateLabel;
+	private: System::Windows::Forms::Label^ createdAtLabel;
+	private: System::Windows::Forms::Label^ updatedAtLabel;
+	private: System::Windows::Forms::TextBox^ createdAtInput;
+	private: System::Windows::Forms::TextBox^ updatedAtInput;
 
 
 	protected:
@@ -89,6 +93,10 @@ namespace coursework {
 			this->idCodeInput = (gcnew System::Windows::Forms::TextBox());
 			this->birthDatePicker = (gcnew System::Windows::Forms::DateTimePicker());
 			this->birthDateLabel = (gcnew System::Windows::Forms::Label());
+			this->createdAtLabel = (gcnew System::Windows::Forms::Label());
+			this->updatedAtLabel = (gcnew System::Windows::Forms::Label());
+			this->createdAtInput = (gcnew System::Windows::Forms::TextBox());
+			this->updatedAtInput = (gcnew System::Windows::Forms::TextBox());
 			this->SuspendLayout();
 			// 
 			// firstNameLabel
@@ -111,7 +119,7 @@ namespace coursework {
 			// lastNameLabel
 			// 
 			this->lastNameLabel->AutoSize = true;
-			this->lastNameLabel->Location = System::Drawing::Point(41, 61);
+			this->lastNameLabel->Location = System::Drawing::Point(42, 61);
 			this->lastNameLabel->Name = L"lastNameLabel";
 			this->lastNameLabel->Size = System::Drawing::Size(72, 16);
 			this->lastNameLabel->TabIndex = 2;
@@ -127,7 +135,7 @@ namespace coursework {
 			// 
 			// okButton
 			// 
-			this->okButton->Location = System::Drawing::Point(44, 222);
+			this->okButton->Location = System::Drawing::Point(44, 277);
 			this->okButton->Name = L"okButton";
 			this->okButton->Size = System::Drawing::Size(150, 35);
 			this->okButton->TabIndex = 8;
@@ -137,7 +145,7 @@ namespace coursework {
 			// 
 			// cancelButton
 			// 
-			this->cancelButton->Location = System::Drawing::Point(281, 222);
+			this->cancelButton->Location = System::Drawing::Point(281, 277);
 			this->cancelButton->Name = L"cancelButton";
 			this->cancelButton->Size = System::Drawing::Size(150, 35);
 			this->cancelButton->TabIndex = 9;
@@ -148,7 +156,7 @@ namespace coursework {
 			// idCodeLabel
 			// 
 			this->idCodeLabel->AutoSize = true;
-			this->idCodeLabel->Location = System::Drawing::Point(41, 95);
+			this->idCodeLabel->Location = System::Drawing::Point(42, 95);
 			this->idCodeLabel->Name = L"idCodeLabel";
 			this->idCodeLabel->Size = System::Drawing::Size(54, 16);
 			this->idCodeLabel->TabIndex = 4;
@@ -175,17 +183,53 @@ namespace coursework {
 			// birthDateLabel
 			// 
 			this->birthDateLabel->AutoSize = true;
-			this->birthDateLabel->Location = System::Drawing::Point(41, 132);
+			this->birthDateLabel->Location = System::Drawing::Point(42, 133);
 			this->birthDateLabel->Name = L"birthDateLabel";
 			this->birthDateLabel->Size = System::Drawing::Size(65, 16);
 			this->birthDateLabel->TabIndex = 7;
 			this->birthDateLabel->Text = L"Birth Date";
 			// 
+			// createdAtLabel
+			// 
+			this->createdAtLabel->AutoSize = true;
+			this->createdAtLabel->Location = System::Drawing::Point(42, 168);
+			this->createdAtLabel->Name = L"createdAtLabel";
+			this->createdAtLabel->Size = System::Drawing::Size(70, 16);
+			this->createdAtLabel->TabIndex = 10;
+			this->createdAtLabel->Text = L"Created At";
+			// 
+			// updatedAtLabel
+			// 
+			this->updatedAtLabel->AutoSize = true;
+			this->updatedAtLabel->Location = System::Drawing::Point(42, 210);
+			this->updatedAtLabel->Name = L"updatedAtLabel";
+			this->updatedAtLabel->Size = System::Drawing::Size(75, 16);
+			this->updatedAtLabel->TabIndex = 11;
+			this->updatedAtLabel->Text = L"Updated At";
+			// 
+			// createdAtInput
+			// 
+			this->createdAtInput->Location = System::Drawing::Point(141, 165);
+			this->createdAtInput->Name = L"createdAtInput";
+			this->createdAtInput->Size = System::Drawing::Size(290, 22);
+			this->createdAtInput->TabIndex = 12;
+			// 
+			// updatedAtInput
+			// 
+			this->updatedAtInput->Location = System::Drawing::Point(141, 204);
+			this->updatedAtInput->Name = L"updatedAtInput";
+			this->updatedAtInput->Size = System::Drawing::Size(290, 22);
+			this->updatedAtInput->TabIndex = 13;
+			// 
 			// ManageEmployee
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(482, 453);
+			this->ClientSize = System::Drawing::Size(482, 353);
+			this->Controls->Add(this->updatedAtInput);
+			this->Controls->Add(this->createdAtInput);
+			this->Controls->Add(this->updatedAtLabel);
+			this->Controls->Add(this->createdAtLabel);
 			this->Controls->Add(this->birthDateLabel);
 			this->Controls->Add(this->birthDatePicker);
 			this->Controls->Add(this->idCodeInput);
@@ -196,8 +240,8 @@ namespace coursework {
 			this->Controls->Add(this->lastNameLabel);
 			this->Controls->Add(this->firstNameInput);
 			this->Controls->Add(this->firstNameLabel);
-			this->MaximumSize = System::Drawing::Size(500, 350);
-			this->MinimumSize = System::Drawing::Size(500, 350);
+			this->MaximumSize = System::Drawing::Size(500, 400);
+			this->MinimumSize = System::Drawing::Size(500, 400);
 			this->Name = L"ManageEmployee";
 			this->Text = L"Create New Employee";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &ManageEmployee::CreateEmployee_FormClosing);
@@ -267,6 +311,8 @@ namespace coursework {
 			this->lastNameInput->Text = Utils::toSystemString(toEdit->getLastName());
 			this->idCodeInput->Text = Utils::toSystemString(toEdit->getIdCode());
 			this->birthDatePicker->Text = Utils::toSystemString(toEdit->getBirthDate());
+			this->createdAtInput->Text = Utils::toSystemString(toEdit->getCreatedAt());
+			this->updatedAtInput->Text = Utils::toSystemString(toEdit->getUpdatedAt());
 			if (toEdit->isDeleted()) {
 				this->Text = L"View Employee";
 				this->firstNameInput->Enabled = false;
@@ -276,6 +322,8 @@ namespace coursework {
 				this->unsavedChanges = false;
 			}
 		}
+		this->createdAtInput->Enabled = false;
+		this->updatedAtInput->Enabled = false;
 	}
 	private: System::Void inputText_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
 		unsavedChanges = true;
@@ -285,6 +333,6 @@ namespace coursework {
 		unsavedChanges = true;
 	}
 
-	};
+};
 
 }
