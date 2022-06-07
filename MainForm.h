@@ -656,12 +656,17 @@ namespace coursework {
 					else if (state->getLastOperation() == Operation::DELETE) {
 						activeGrid->Rows->RemoveAt(activeGrid->Rows[i]->Index);
 						array<System::Object^>^ rowData = toRow(employee);
+						if (this->tableDeleted == nullptr) {
+							this->tableDeleted = createTable(dataGridDeleted);
+						}
 						this->tableDeleted->LoadDataRow(rowData, true);
 					}
 					break;
 				}
 			}
 		}
+		dataGridActive->Columns[ID_INDEX]->Visible = false;
+		dataGridDeleted->Columns[ID_INDEX]->Visible = false;
 	}
 	private: void addCreatedRecordToTable(Employee employee) {
 		array<System::Object^>^ rowData = toRow(employee);
