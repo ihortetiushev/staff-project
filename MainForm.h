@@ -18,6 +18,7 @@ namespace coursework {
 	const Int32 LAST_NAME_INDEX = 2;
 	const Int32 ID_CODE_INDEX = 3;
 	const Int32 BIRTH_DATE_INDEX = 4;
+
 	public ref class MainForm : public System::Windows::Forms::Form
 	{
 	public:
@@ -27,6 +28,11 @@ namespace coursework {
 			this->StartPosition = FormStartPosition::CenterScreen;
 			this->repo = repo;
 			this->uiState = gcnew UIState();
+
+			this->birthDatePicker->ShowCheckBox = true;
+			this->birthDatePicker->Checked = false;
+			this->birthDatePicker->Format = DateTimePickerFormat::Custom;
+			this->birthDatePicker->CustomFormat = " ";
 		}
 
 	protected:
@@ -47,12 +53,13 @@ namespace coursework {
 		DataTable^ tableDeleted;
 		UIState^ uiState;
 	private: System::Windows::Forms::Button^ searchButton;
+	private: System::Windows::Forms::Button^ clearButton;
 	protected:
 
 
 
 
-	private: System::Windows::Forms::Button^ button2;
+
 	private: System::Windows::Forms::MenuStrip^ menuStrip1;
 	private: System::Windows::Forms::ToolStripMenuItem^ systemToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ exitToolStripMenuItem;
@@ -71,8 +78,13 @@ namespace coursework {
 	private: System::Windows::Forms::Label^ firstNameLabel;
 	private: System::Windows::Forms::TextBox^ idCodeInput;
 	private: System::Windows::Forms::Label^ idCodeLabel;
-	private: System::Windows::Forms::Label^ secondNameLabel;
-	private: System::Windows::Forms::TextBox^ secondNameInput;
+	private: System::Windows::Forms::Label^ lastNameLabel;
+	private: System::Windows::Forms::TextBox^ lastNameInput;
+	private: System::Windows::Forms::Label^ searchLabel;
+	private: System::Windows::Forms::DateTimePicker^ birthDatePicker;
+	private: System::Windows::Forms::Label^ labelBirthDate;
+
+
 	private: System::ComponentModel::IContainer^ components;
 	private:
 		/// <summary>
@@ -88,7 +100,7 @@ namespace coursework {
 		void InitializeComponent(void)
 		{
 			this->searchButton = (gcnew System::Windows::Forms::Button());
-			this->button2 = (gcnew System::Windows::Forms::Button());
+			this->clearButton = (gcnew System::Windows::Forms::Button());
 			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
 			this->systemToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->exitToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -99,16 +111,19 @@ namespace coursework {
 			this->menuStrip2 = (gcnew System::Windows::Forms::MenuStrip());
 			this->dataGridActive = (gcnew System::Windows::Forms::DataGridView());
 			this->splitContainer1 = (gcnew System::Windows::Forms::SplitContainer());
+			this->birthDatePicker = (gcnew System::Windows::Forms::DateTimePicker());
+			this->labelBirthDate = (gcnew System::Windows::Forms::Label());
+			this->searchLabel = (gcnew System::Windows::Forms::Label());
+			this->idCodeInput = (gcnew System::Windows::Forms::TextBox());
+			this->idCodeLabel = (gcnew System::Windows::Forms::Label());
+			this->lastNameLabel = (gcnew System::Windows::Forms::Label());
+			this->lastNameInput = (gcnew System::Windows::Forms::TextBox());
+			this->firstNameInput = (gcnew System::Windows::Forms::TextBox());
+			this->firstNameLabel = (gcnew System::Windows::Forms::Label());
 			this->tabControl = (gcnew System::Windows::Forms::TabControl());
 			this->tabPageActive = (gcnew System::Windows::Forms::TabPage());
 			this->tabPageDeleted = (gcnew System::Windows::Forms::TabPage());
 			this->dataGridDeleted = (gcnew System::Windows::Forms::DataGridView());
-			this->firstNameLabel = (gcnew System::Windows::Forms::Label());
-			this->firstNameInput = (gcnew System::Windows::Forms::TextBox());
-			this->secondNameInput = (gcnew System::Windows::Forms::TextBox());
-			this->secondNameLabel = (gcnew System::Windows::Forms::Label());
-			this->idCodeLabel = (gcnew System::Windows::Forms::Label());
-			this->idCodeInput = (gcnew System::Windows::Forms::TextBox());
 			this->menuStrip2->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridActive))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->splitContainer1))->BeginInit();
@@ -123,30 +138,30 @@ namespace coursework {
 			// 
 			// searchButton
 			// 
-			this->searchButton->Location = System::Drawing::Point(13, 147);
+			this->searchButton->Location = System::Drawing::Point(529, 152);
 			this->searchButton->Name = L"searchButton";
-			this->searchButton->Size = System::Drawing::Size(132, 32);
+			this->searchButton->Size = System::Drawing::Size(95, 32);
 			this->searchButton->TabIndex = 1;
 			this->searchButton->Text = L"Search";
 			this->searchButton->UseVisualStyleBackColor = true;
-			this->searchButton->Click += gcnew System::EventHandler(this, &MainForm::button1_Click);
+			this->searchButton->Click += gcnew System::EventHandler(this, &MainForm::searchButton_Click);
 			// 
-			// button2
+			// clearButton
 			// 
-			this->button2->Location = System::Drawing::Point(223, 147);
-			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(127, 32);
-			this->button2->TabIndex = 2;
-			this->button2->Text = L"button2";
-			this->button2->UseVisualStyleBackColor = true;
-			this->button2->Click += gcnew System::EventHandler(this, &MainForm::button2_Click);
+			this->clearButton->Location = System::Drawing::Point(677, 152);
+			this->clearButton->Name = L"clearButton";
+			this->clearButton->Size = System::Drawing::Size(95, 32);
+			this->clearButton->TabIndex = 2;
+			this->clearButton->Text = L"Clear";
+			this->clearButton->UseVisualStyleBackColor = true;
+			this->clearButton->Click += gcnew System::EventHandler(this, &MainForm::clearButton_Click);
 			// 
 			// menuStrip1
 			// 
 			this->menuStrip1->ImageScalingSize = System::Drawing::Size(20, 20);
 			this->menuStrip1->Location = System::Drawing::Point(0, 28);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(926, 24);
+			this->menuStrip1->Size = System::Drawing::Size(827, 24);
 			this->menuStrip1->TabIndex = 3;
 			this->menuStrip1->Text = L"menuStrip1";
 			// 
@@ -177,21 +192,21 @@ namespace coursework {
 			// newEmployeeToolStripMenuItem
 			// 
 			this->newEmployeeToolStripMenuItem->Name = L"newEmployeeToolStripMenuItem";
-			this->newEmployeeToolStripMenuItem->Size = System::Drawing::Size(224, 26);
+			this->newEmployeeToolStripMenuItem->Size = System::Drawing::Size(206, 26);
 			this->newEmployeeToolStripMenuItem->Text = L"New Employee";
 			this->newEmployeeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::newEmployeeToolStripMenuItem_Click);
 			// 
 			// editEmployeeToolStripMenuItem
 			// 
 			this->editEmployeeToolStripMenuItem->Name = L"editEmployeeToolStripMenuItem";
-			this->editEmployeeToolStripMenuItem->Size = System::Drawing::Size(224, 26);
+			this->editEmployeeToolStripMenuItem->Size = System::Drawing::Size(206, 26);
 			this->editEmployeeToolStripMenuItem->Text = L"Edit Employee";
 			this->editEmployeeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::editEmployeeToolStripMenuItem_Click);
 			// 
 			// deleteEmployeeToolStripMenuItem
 			// 
 			this->deleteEmployeeToolStripMenuItem->Name = L"deleteEmployeeToolStripMenuItem";
-			this->deleteEmployeeToolStripMenuItem->Size = System::Drawing::Size(224, 26);
+			this->deleteEmployeeToolStripMenuItem->Size = System::Drawing::Size(206, 26);
 			this->deleteEmployeeToolStripMenuItem->Text = L"Delete Employee";
 			this->deleteEmployeeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::deleteEmployeeToolStripMenuItem_Click);
 			// 
@@ -204,7 +219,7 @@ namespace coursework {
 			});
 			this->menuStrip2->Location = System::Drawing::Point(0, 0);
 			this->menuStrip2->Name = L"menuStrip2";
-			this->menuStrip2->Size = System::Drawing::Size(926, 28);
+			this->menuStrip2->Size = System::Drawing::Size(827, 28);
 			this->menuStrip2->TabIndex = 4;
 			this->menuStrip2->Text = L"menuStrip2";
 			// 
@@ -226,7 +241,7 @@ namespace coursework {
 			this->dataGridActive->RowTemplate->Height = 24;
 			this->dataGridActive->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
 			this->dataGridActive->SelectionMode = System::Windows::Forms::DataGridViewSelectionMode::FullRowSelect;
-			this->dataGridActive->Size = System::Drawing::Size(908, 324);
+			this->dataGridActive->Size = System::Drawing::Size(809, 308);
 			this->dataGridActive->TabIndex = 0;
 			// 
 			// splitContainer1
@@ -239,21 +254,109 @@ namespace coursework {
 			// 
 			// splitContainer1.Panel1
 			// 
+			this->splitContainer1->Panel1->Controls->Add(this->birthDatePicker);
+			this->splitContainer1->Panel1->Controls->Add(this->labelBirthDate);
+			this->splitContainer1->Panel1->Controls->Add(this->searchLabel);
 			this->splitContainer1->Panel1->Controls->Add(this->idCodeInput);
 			this->splitContainer1->Panel1->Controls->Add(this->idCodeLabel);
-			this->splitContainer1->Panel1->Controls->Add(this->secondNameLabel);
-			this->splitContainer1->Panel1->Controls->Add(this->secondNameInput);
+			this->splitContainer1->Panel1->Controls->Add(this->lastNameLabel);
+			this->splitContainer1->Panel1->Controls->Add(this->lastNameInput);
 			this->splitContainer1->Panel1->Controls->Add(this->firstNameInput);
 			this->splitContainer1->Panel1->Controls->Add(this->firstNameLabel);
 			this->splitContainer1->Panel1->Controls->Add(this->searchButton);
-			this->splitContainer1->Panel1->Controls->Add(this->button2);
+			this->splitContainer1->Panel1->Controls->Add(this->clearButton);
 			// 
 			// splitContainer1.Panel2
 			// 
 			this->splitContainer1->Panel2->Controls->Add(this->tabControl);
-			this->splitContainer1->Size = System::Drawing::Size(926, 566);
-			this->splitContainer1->SplitterDistance = 199;
+			this->splitContainer1->Size = System::Drawing::Size(827, 566);
+			this->splitContainer1->SplitterDistance = 215;
 			this->splitContainer1->TabIndex = 5;
+			// 
+			// birthDatePicker
+			// 
+			this->birthDatePicker->Format = System::Windows::Forms::DateTimePickerFormat::Short;
+			this->birthDatePicker->Location = System::Drawing::Point(530, 102);
+			this->birthDatePicker->Name = L"birthDatePicker";
+			this->birthDatePicker->Size = System::Drawing::Size(132, 22);
+			this->birthDatePicker->TabIndex = 11;
+			this->birthDatePicker->ValueChanged += gcnew System::EventHandler(this, &MainForm::birthDatePicker_ValueChanged);
+			// 
+			// labelBirthDate
+			// 
+			this->labelBirthDate->AutoSize = true;
+			this->labelBirthDate->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->labelBirthDate->Location = System::Drawing::Point(422, 107);
+			this->labelBirthDate->Name = L"labelBirthDate";
+			this->labelBirthDate->Size = System::Drawing::Size(65, 16);
+			this->labelBirthDate->TabIndex = 10;
+			this->labelBirthDate->Text = L"Birth Date";
+			// 
+			// searchLabel
+			// 
+			this->searchLabel->AutoSize = true;
+			this->searchLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->searchLabel->Location = System::Drawing::Point(32, 24);
+			this->searchLabel->Name = L"searchLabel";
+			this->searchLabel->Size = System::Drawing::Size(90, 16);
+			this->searchLabel->TabIndex = 9;
+			this->searchLabel->Text = L"Search Fields";
+			// 
+			// idCodeInput
+			// 
+			this->idCodeInput->Location = System::Drawing::Point(132, 104);
+			this->idCodeInput->Name = L"idCodeInput";
+			this->idCodeInput->Size = System::Drawing::Size(240, 22);
+			this->idCodeInput->TabIndex = 8;
+			// 
+			// idCodeLabel
+			// 
+			this->idCodeLabel->AutoSize = true;
+			this->idCodeLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->idCodeLabel->Location = System::Drawing::Point(32, 107);
+			this->idCodeLabel->Name = L"idCodeLabel";
+			this->idCodeLabel->Size = System::Drawing::Size(54, 16);
+			this->idCodeLabel->TabIndex = 7;
+			this->idCodeLabel->Text = L"Id Code";
+			// 
+			// lastNameLabel
+			// 
+			this->lastNameLabel->AutoSize = true;
+			this->lastNameLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->lastNameLabel->Location = System::Drawing::Point(422, 63);
+			this->lastNameLabel->Name = L"lastNameLabel";
+			this->lastNameLabel->Size = System::Drawing::Size(72, 16);
+			this->lastNameLabel->TabIndex = 6;
+			this->lastNameLabel->Text = L"Last Name";
+			// 
+			// lastNameInput
+			// 
+			this->lastNameInput->Location = System::Drawing::Point(530, 57);
+			this->lastNameInput->Name = L"lastNameInput";
+			this->lastNameInput->Size = System::Drawing::Size(240, 22);
+			this->lastNameInput->TabIndex = 5;
+			// 
+			// firstNameInput
+			// 
+			this->firstNameInput->Location = System::Drawing::Point(132, 57);
+			this->firstNameInput->Name = L"firstNameInput";
+			this->firstNameInput->Size = System::Drawing::Size(240, 22);
+			this->firstNameInput->TabIndex = 4;
+			// 
+			// firstNameLabel
+			// 
+			this->firstNameLabel->AutoSize = true;
+			this->firstNameLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->firstNameLabel->Location = System::Drawing::Point(32, 63);
+			this->firstNameLabel->Name = L"firstNameLabel";
+			this->firstNameLabel->Size = System::Drawing::Size(72, 16);
+			this->firstNameLabel->TabIndex = 3;
+			this->firstNameLabel->Text = L"First Name";
 			// 
 			// tabControl
 			// 
@@ -263,7 +366,7 @@ namespace coursework {
 			this->tabControl->Location = System::Drawing::Point(0, 0);
 			this->tabControl->Name = L"tabControl";
 			this->tabControl->SelectedIndex = 0;
-			this->tabControl->Size = System::Drawing::Size(922, 359);
+			this->tabControl->Size = System::Drawing::Size(823, 343);
 			this->tabControl->TabIndex = 0;
 			// 
 			// tabPageActive
@@ -272,7 +375,7 @@ namespace coursework {
 			this->tabPageActive->Location = System::Drawing::Point(4, 25);
 			this->tabPageActive->Name = L"tabPageActive";
 			this->tabPageActive->Padding = System::Windows::Forms::Padding(3);
-			this->tabPageActive->Size = System::Drawing::Size(914, 330);
+			this->tabPageActive->Size = System::Drawing::Size(815, 314);
 			this->tabPageActive->TabIndex = 0;
 			this->tabPageActive->Text = L"Active";
 			this->tabPageActive->UseVisualStyleBackColor = true;
@@ -283,7 +386,7 @@ namespace coursework {
 			this->tabPageDeleted->Location = System::Drawing::Point(4, 25);
 			this->tabPageDeleted->Name = L"tabPageDeleted";
 			this->tabPageDeleted->Padding = System::Windows::Forms::Padding(3);
-			this->tabPageDeleted->Size = System::Drawing::Size(914, 330);
+			this->tabPageDeleted->Size = System::Drawing::Size(815, 314);
 			this->tabPageDeleted->TabIndex = 1;
 			this->tabPageDeleted->Text = L"Deleted";
 			this->tabPageDeleted->UseVisualStyleBackColor = true;
@@ -302,62 +405,14 @@ namespace coursework {
 			this->dataGridDeleted->RowHeadersWidth = 51;
 			this->dataGridDeleted->RowTemplate->Height = 24;
 			this->dataGridDeleted->SelectionMode = System::Windows::Forms::DataGridViewSelectionMode::FullRowSelect;
-			this->dataGridDeleted->Size = System::Drawing::Size(908, 324);
+			this->dataGridDeleted->Size = System::Drawing::Size(809, 308);
 			this->dataGridDeleted->TabIndex = 0;
-			// 
-			// firstNameLabel
-			// 
-			this->firstNameLabel->AutoSize = true;
-			this->firstNameLabel->Location = System::Drawing::Point(10, 18);
-			this->firstNameLabel->Name = L"firstNameLabel";
-			this->firstNameLabel->Size = System::Drawing::Size(72, 16);
-			this->firstNameLabel->TabIndex = 3;
-			this->firstNameLabel->Text = L"First Name";
-			// 
-			// firstNameInput
-			// 
-			this->firstNameInput->Location = System::Drawing::Point(110, 12);
-			this->firstNameInput->Name = L"firstNameInput";
-			this->firstNameInput->Size = System::Drawing::Size(240, 22);
-			this->firstNameInput->TabIndex = 4;
-			// 
-			// secondNameInput
-			// 
-			this->secondNameInput->Location = System::Drawing::Point(110, 50);
-			this->secondNameInput->Name = L"secondNameInput";
-			this->secondNameInput->Size = System::Drawing::Size(240, 22);
-			this->secondNameInput->TabIndex = 5;
-			// 
-			// secondNameLabel
-			// 
-			this->secondNameLabel->AutoSize = true;
-			this->secondNameLabel->Location = System::Drawing::Point(10, 56);
-			this->secondNameLabel->Name = L"secondNameLabel";
-			this->secondNameLabel->Size = System::Drawing::Size(94, 16);
-			this->secondNameLabel->TabIndex = 6;
-			this->secondNameLabel->Text = L"Second Name";
-			// 
-			// idCodeLabel
-			// 
-			this->idCodeLabel->AutoSize = true;
-			this->idCodeLabel->Location = System::Drawing::Point(10, 92);
-			this->idCodeLabel->Name = L"idCodeLabel";
-			this->idCodeLabel->Size = System::Drawing::Size(54, 16);
-			this->idCodeLabel->TabIndex = 7;
-			this->idCodeLabel->Text = L"Id Code";
-			// 
-			// idCodeInput
-			// 
-			this->idCodeInput->Location = System::Drawing::Point(110, 86);
-			this->idCodeInput->Name = L"idCodeInput";
-			this->idCodeInput->Size = System::Drawing::Size(240, 22);
-			this->idCodeInput->TabIndex = 8;
 			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(926, 618);
+			this->ClientSize = System::Drawing::Size(827, 618);
 			this->Controls->Add(this->splitContainer1);
 			this->Controls->Add(this->menuStrip1);
 			this->Controls->Add(this->menuStrip2);
@@ -382,13 +437,16 @@ namespace coursework {
 
 		}
 #pragma endregion
-	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+	private: System::Void searchButton_Click(System::Object^ sender, System::EventArgs^ e) {
 		tableActive = createTable(dataGridActive);
 		tableDeleted = createTable(dataGridDeleted);
-		//std::vector<Employee> allRecords = this->repo->findAll();
 		Employee mask;
 		mask.setFirstName(Utils::toStandardString(this->firstNameInput->Text));
-		mask.setLastName(Utils::toStandardString(this->secondNameInput->Text));
+		mask.setLastName(Utils::toStandardString(this->lastNameInput->Text));
+		mask.setIdCode(Utils::toStandardString(this->idCodeInput->Text));
+		if (this->birthDatePicker->Checked) {
+			mask.setBirthDate(Utils::toStandardString(this->birthDatePicker->Text));
+		}		
 		std::vector<Employee> allRecords = this->repo->findEmployees(mask);
 		for (auto& emp : allRecords) {
 			array<System::Object^>^ rowData = toRow(emp);
@@ -426,14 +484,11 @@ namespace coursework {
 		dataGrid->Columns[BIRTH_DATE_INDEX]->AutoSizeMode = DataGridViewAutoSizeColumnMode::Fill;
 		return table;
 	}
-	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
-		/*DataSet^ DS = gcnew DataSet();
-		DS->Tables->Clear();
-		DataTable^ table = (DataTable^)dataGridView1->DataSource;
-		DS->Tables->Add(table);
-		DS->WriteXml("C:\\temp\\1.xml");*/
-		this->repo->readEmpolyeesFromFile();
-
+	private: System::Void clearButton_Click(System::Object^ sender, System::EventArgs^ e) {
+		this->firstNameInput->Text = "";
+		this->lastNameInput->Text = "";
+		this->idCodeInput->Text = "";
+		this->birthDatePicker->Text = "";
 	}
 	private: System::Void exitToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 		Application::Exit();
@@ -527,6 +582,17 @@ namespace coursework {
 			MessageBox::Show(L"Error saving data " + e->Message);
 		}
 		refreshGridData(uiState);
+	}
+	private: System::Void birthDatePicker_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+		if (!birthDatePicker->Checked) {
+			// hide date value since it's not set
+			this->birthDatePicker->Format = DateTimePickerFormat::Custom;
+			this->birthDatePicker->CustomFormat = " ";
+		}
+		else {
+			this->birthDatePicker->CustomFormat = "";
+			birthDatePicker->Format = DateTimePickerFormat::Short; // set the date format you want.
+		}
 	}
 	};
 }

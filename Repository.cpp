@@ -164,16 +164,24 @@ Employee Repository::getById(int id) {
 	}
 	return found->second;
 }
-std::vector<Employee> Repository::findEmployees(Employee toFind) {
+std::vector<Employee> Repository::findEmployees(Employee mask) {
 	std::vector<Employee> found;
 	for (auto &it : this->empolyees) {
 		//bool candidate = false;
-		if (toFind.getFirstName().length() != 0 &&
-			it.second.getFirstName() != toFind.getFirstName()) {
+		if (mask.getFirstName().length() != 0 &&
+			it.second.getFirstName() != mask.getFirstName()) {
 			continue;
 		}
-		if (toFind.getLastName().length() != 0 &&
-			it.second.getLastName() != toFind.getLastName()) {
+		if (mask.getLastName().length() != 0 &&
+			it.second.getLastName() != mask.getLastName()) {
+			continue;
+		}
+		if (mask.getIdCode().length() != 0 &&
+			it.second.getIdCode() != mask.getIdCode()) {
+			continue;
+		}
+		if (mask.getBirthDate().length() != 0 &&
+			it.second.getBirthDate() != mask.getBirthDate()) {
 			continue;
 		}
 		found.push_back(it.second);
