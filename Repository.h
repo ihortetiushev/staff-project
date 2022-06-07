@@ -18,6 +18,7 @@ private:
 public:
 	Employee createEmployee(Employee toCreate);
 	Employee updateEmployee(Employee toUpdate);
+	Employee deleteEmployee(int id);
 	void readEmpolyeesFromFile();
 	std::vector<Employee> findAll();
 	Employee getById(int id);

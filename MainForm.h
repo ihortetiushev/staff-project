@@ -41,7 +41,7 @@ namespace coursework {
 			}
 		}
 
-	private: 
+	private:
 		Repository* repo;
 		DataTable^ tableActive;
 		DataTable^ tableDeleted;
@@ -65,6 +65,7 @@ namespace coursework {
 	private: System::Windows::Forms::TabPage^ tabPageActive;
 	private: System::Windows::Forms::TabPage^ tabPageDeleted;
 	private: System::Windows::Forms::DataGridView^ dataGridDeleted;
+	private: System::Windows::Forms::ToolStripMenuItem^ deleteEmployeeToolStripMenuItem;
 	private: System::ComponentModel::IContainer^ components;
 	private:
 		/// <summary>
@@ -94,6 +95,7 @@ namespace coursework {
 			this->tabPageActive = (gcnew System::Windows::Forms::TabPage());
 			this->tabPageDeleted = (gcnew System::Windows::Forms::TabPage());
 			this->dataGridDeleted = (gcnew System::Windows::Forms::DataGridView());
+			this->deleteEmployeeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->menuStrip2->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridActive))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->splitContainer1))->BeginInit();
@@ -151,9 +153,9 @@ namespace coursework {
 			// 
 			// staffToolStripMenuItem
 			// 
-			this->staffToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+			this->staffToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
 				this->newEmployeeToolStripMenuItem,
-					this->editEmployeeToolStripMenuItem
+					this->editEmployeeToolStripMenuItem, this->deleteEmployeeToolStripMenuItem
 			});
 			this->staffToolStripMenuItem->Name = L"staffToolStripMenuItem";
 			this->staffToolStripMenuItem->Size = System::Drawing::Size(54, 24);
@@ -277,6 +279,13 @@ namespace coursework {
 			this->dataGridDeleted->Size = System::Drawing::Size(908, 324);
 			this->dataGridDeleted->TabIndex = 0;
 			// 
+			// deleteEmployeeToolStripMenuItem
+			// 
+			this->deleteEmployeeToolStripMenuItem->Name = L"deleteEmployeeToolStripMenuItem";
+			this->deleteEmployeeToolStripMenuItem->Size = System::Drawing::Size(224, 26);
+			this->deleteEmployeeToolStripMenuItem->Text = L"Delete Employee";
+			this->deleteEmployeeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::deleteEmployeeToolStripMenuItem_Click);
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
@@ -308,8 +317,8 @@ namespace coursework {
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 		tableActive = createTable(dataGridActive);
 		tableDeleted = createTable(dataGridDeleted);
-		std::vector<Employee> allRecords = this -> repo->findAll();
-		for (auto &emp : allRecords) {
+		std::vector<Employee> allRecords = this->repo->findAll();
+		for (auto& emp : allRecords) {
 			array<System::Object^>^ rowData = toRow(emp);
 			if (emp.isDeleted()) {
 				tableDeleted->LoadDataRow(rowData, true);
@@ -318,9 +327,9 @@ namespace coursework {
 				tableActive->LoadDataRow(rowData, true);
 			}
 		}
-			
+
 	}
-    private: array<System::Object^>^ toRow(Employee emp) {
+	private: array<System::Object^>^ toRow(Employee emp) {
 		array<System::Object^>^ values = gcnew array< System::Object^ >(5);
 		values[ID_INDEX] = emp.getId();
 		values[FIRST_NAME_INDEX] = Utils::toSystemString(emp.getFirstName());
@@ -381,7 +390,7 @@ namespace coursework {
 		ManageEmployee mangeEmployeeDlg(this->repo, &toEdit, state);
 		mangeEmployeeDlg.ShowDialog();
 		refreshGridData(state);
-		
+
 	}
 	private:  DataGridView^ getActiveGrid() {
 		DataGridView^ activeGrid;
@@ -393,7 +402,7 @@ namespace coursework {
 		}
 		return activeGrid;
 	}
-    private: void refreshGridData(UIState^ state) {
+	private: void refreshGridData(UIState^ state) {
 		if (state->getLastOperation() == Operation::CANCEL) {
 			return;
 		}
@@ -418,5 +427,34 @@ namespace coursework {
 			}
 		}
 	}
-};
+	private: System::Void deleteEmployeeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+		DataGridView^ activeGrid = getActiveGrid();
+		auto selected = activeGrid->SelectedRows;
+		if (selected->Count == 0) {
+			MessageBox::Show(L"No data selected for deleting", L"Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+		Object^ objId = activeGrid->CurrentRow->Cells[ID_INDEX]->Value;
+		Employee toDelete = this->repo->getById(safe_cast<int>(objId));
+		std::string name = toDelete.getLastName() + " " + toDelete.getFirstName();
+		String^ question = L"Are you sure you want to delete " + Utils::toSystemString(name) + "?";
+		if (!Utils::isConfirmed(question)) {
+			return;
+		}
+		UIState^ uiState = gcnew UIState();
+		try {
+			Employee deleted = repo->deleteEmployee(toDelete.getId());
+			uiState->setLastOperation(Operation::DELETE);
+			uiState->setLastModifiedId(deleted.getId());
+		}
+		catch (std::invalid_argument& error) {
+			MessageBox::Show(Utils::toSystemString(error.what()), L"Error saving data", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+		catch (System::Exception^ e)
+		{
+			MessageBox::Show(L"Error saving data " + e->Message);
+		}
+		refreshGridData(uiState);
+	}
+	};
 }

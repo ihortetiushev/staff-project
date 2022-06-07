@@ -34,7 +34,7 @@ Employee Repository::createEmployee(Employee toCreate) {
 
 Employee Repository::updateEmployee(Employee toUpdate) {
 	if (empolyees.find(toUpdate.getId()) == empolyees.end()) {
-		throw std::invalid_argument("No data found being edited");
+		throw std::invalid_argument("No data found for update");
 	}
 	validateEmployee(toUpdate);
 	Employee* existing = findByByIdCode(empolyees, toUpdate.getIdCode());
@@ -44,6 +44,20 @@ Employee Repository::updateEmployee(Employee toUpdate) {
 	empolyees[toUpdate.getId()] = toUpdate;
 	saveEmpolyeesToFile(EMPLOYEES_DATA);
 	return toUpdate;
+}
+
+Employee Repository::deleteEmployee(int id) {
+	auto existing = empolyees.find(id);
+	if (existing == empolyees.end()) {
+		throw std::invalid_argument("No data found to delete");
+	}
+	if (existing->second.isDeleted()) {
+		throw std::invalid_argument("Employee is deleted already");
+	}
+	existing->second.setDeleted(true);
+	empolyees[id] = existing->second;
+	saveEmpolyeesToFile(EMPLOYEES_DATA);
+	return  existing->second;
 }
 
 void Repository::validateEmployee(Employee employee) {
