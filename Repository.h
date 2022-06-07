@@ -22,4 +22,5 @@ public:
 	void readEmpolyeesFromFile();
 	std::vector<Employee> findAll();
 	Employee getById(int id);
+	std::vector<Employee> findEmployees(Employee toFind);
 };

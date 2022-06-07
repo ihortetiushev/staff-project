@@ -46,11 +46,12 @@ namespace coursework {
 		DataTable^ tableActive;
 		DataTable^ tableDeleted;
 		UIState^ uiState;
+	private: System::Windows::Forms::Button^ searchButton;
 	protected:
 
 
 
-	private: System::Windows::Forms::Button^ button1;
+
 	private: System::Windows::Forms::Button^ button2;
 	private: System::Windows::Forms::MenuStrip^ menuStrip1;
 	private: System::Windows::Forms::ToolStripMenuItem^ systemToolStripMenuItem;
@@ -66,6 +67,12 @@ namespace coursework {
 	private: System::Windows::Forms::TabPage^ tabPageDeleted;
 	private: System::Windows::Forms::DataGridView^ dataGridDeleted;
 	private: System::Windows::Forms::ToolStripMenuItem^ deleteEmployeeToolStripMenuItem;
+	private: System::Windows::Forms::TextBox^ firstNameInput;
+	private: System::Windows::Forms::Label^ firstNameLabel;
+	private: System::Windows::Forms::TextBox^ idCodeInput;
+	private: System::Windows::Forms::Label^ idCodeLabel;
+	private: System::Windows::Forms::Label^ secondNameLabel;
+	private: System::Windows::Forms::TextBox^ secondNameInput;
 	private: System::ComponentModel::IContainer^ components;
 	private:
 		/// <summary>
@@ -80,7 +87,7 @@ namespace coursework {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->searchButton = (gcnew System::Windows::Forms::Button());
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
 			this->systemToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -88,6 +95,7 @@ namespace coursework {
 			this->staffToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->newEmployeeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->editEmployeeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->deleteEmployeeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->menuStrip2 = (gcnew System::Windows::Forms::MenuStrip());
 			this->dataGridActive = (gcnew System::Windows::Forms::DataGridView());
 			this->splitContainer1 = (gcnew System::Windows::Forms::SplitContainer());
@@ -95,7 +103,12 @@ namespace coursework {
 			this->tabPageActive = (gcnew System::Windows::Forms::TabPage());
 			this->tabPageDeleted = (gcnew System::Windows::Forms::TabPage());
 			this->dataGridDeleted = (gcnew System::Windows::Forms::DataGridView());
-			this->deleteEmployeeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->firstNameLabel = (gcnew System::Windows::Forms::Label());
+			this->firstNameInput = (gcnew System::Windows::Forms::TextBox());
+			this->secondNameInput = (gcnew System::Windows::Forms::TextBox());
+			this->secondNameLabel = (gcnew System::Windows::Forms::Label());
+			this->idCodeLabel = (gcnew System::Windows::Forms::Label());
+			this->idCodeInput = (gcnew System::Windows::Forms::TextBox());
 			this->menuStrip2->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridActive))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->splitContainer1))->BeginInit();
@@ -108,21 +121,21 @@ namespace coursework {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridDeleted))->BeginInit();
 			this->SuspendLayout();
 			// 
-			// button1
+			// searchButton
 			// 
-			this->button1->Location = System::Drawing::Point(25, 15);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(75, 23);
-			this->button1->TabIndex = 1;
-			this->button1->Text = L"button1";
-			this->button1->UseVisualStyleBackColor = true;
-			this->button1->Click += gcnew System::EventHandler(this, &MainForm::button1_Click);
+			this->searchButton->Location = System::Drawing::Point(13, 147);
+			this->searchButton->Name = L"searchButton";
+			this->searchButton->Size = System::Drawing::Size(132, 32);
+			this->searchButton->TabIndex = 1;
+			this->searchButton->Text = L"Search";
+			this->searchButton->UseVisualStyleBackColor = true;
+			this->searchButton->Click += gcnew System::EventHandler(this, &MainForm::button1_Click);
 			// 
 			// button2
 			// 
-			this->button2->Location = System::Drawing::Point(226, 15);
+			this->button2->Location = System::Drawing::Point(223, 147);
 			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(75, 23);
+			this->button2->Size = System::Drawing::Size(127, 32);
 			this->button2->TabIndex = 2;
 			this->button2->Text = L"button2";
 			this->button2->UseVisualStyleBackColor = true;
@@ -175,6 +188,13 @@ namespace coursework {
 			this->editEmployeeToolStripMenuItem->Text = L"Edit Employee";
 			this->editEmployeeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::editEmployeeToolStripMenuItem_Click);
 			// 
+			// deleteEmployeeToolStripMenuItem
+			// 
+			this->deleteEmployeeToolStripMenuItem->Name = L"deleteEmployeeToolStripMenuItem";
+			this->deleteEmployeeToolStripMenuItem->Size = System::Drawing::Size(224, 26);
+			this->deleteEmployeeToolStripMenuItem->Text = L"Delete Employee";
+			this->deleteEmployeeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::deleteEmployeeToolStripMenuItem_Click);
+			// 
 			// menuStrip2
 			// 
 			this->menuStrip2->ImageScalingSize = System::Drawing::Size(20, 20);
@@ -219,7 +239,13 @@ namespace coursework {
 			// 
 			// splitContainer1.Panel1
 			// 
-			this->splitContainer1->Panel1->Controls->Add(this->button1);
+			this->splitContainer1->Panel1->Controls->Add(this->idCodeInput);
+			this->splitContainer1->Panel1->Controls->Add(this->idCodeLabel);
+			this->splitContainer1->Panel1->Controls->Add(this->secondNameLabel);
+			this->splitContainer1->Panel1->Controls->Add(this->secondNameInput);
+			this->splitContainer1->Panel1->Controls->Add(this->firstNameInput);
+			this->splitContainer1->Panel1->Controls->Add(this->firstNameLabel);
+			this->splitContainer1->Panel1->Controls->Add(this->searchButton);
 			this->splitContainer1->Panel1->Controls->Add(this->button2);
 			// 
 			// splitContainer1.Panel2
@@ -279,12 +305,53 @@ namespace coursework {
 			this->dataGridDeleted->Size = System::Drawing::Size(908, 324);
 			this->dataGridDeleted->TabIndex = 0;
 			// 
-			// deleteEmployeeToolStripMenuItem
+			// firstNameLabel
 			// 
-			this->deleteEmployeeToolStripMenuItem->Name = L"deleteEmployeeToolStripMenuItem";
-			this->deleteEmployeeToolStripMenuItem->Size = System::Drawing::Size(224, 26);
-			this->deleteEmployeeToolStripMenuItem->Text = L"Delete Employee";
-			this->deleteEmployeeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::deleteEmployeeToolStripMenuItem_Click);
+			this->firstNameLabel->AutoSize = true;
+			this->firstNameLabel->Location = System::Drawing::Point(10, 18);
+			this->firstNameLabel->Name = L"firstNameLabel";
+			this->firstNameLabel->Size = System::Drawing::Size(72, 16);
+			this->firstNameLabel->TabIndex = 3;
+			this->firstNameLabel->Text = L"First Name";
+			// 
+			// firstNameInput
+			// 
+			this->firstNameInput->Location = System::Drawing::Point(110, 12);
+			this->firstNameInput->Name = L"firstNameInput";
+			this->firstNameInput->Size = System::Drawing::Size(240, 22);
+			this->firstNameInput->TabIndex = 4;
+			// 
+			// secondNameInput
+			// 
+			this->secondNameInput->Location = System::Drawing::Point(110, 50);
+			this->secondNameInput->Name = L"secondNameInput";
+			this->secondNameInput->Size = System::Drawing::Size(240, 22);
+			this->secondNameInput->TabIndex = 5;
+			// 
+			// secondNameLabel
+			// 
+			this->secondNameLabel->AutoSize = true;
+			this->secondNameLabel->Location = System::Drawing::Point(10, 56);
+			this->secondNameLabel->Name = L"secondNameLabel";
+			this->secondNameLabel->Size = System::Drawing::Size(94, 16);
+			this->secondNameLabel->TabIndex = 6;
+			this->secondNameLabel->Text = L"Second Name";
+			// 
+			// idCodeLabel
+			// 
+			this->idCodeLabel->AutoSize = true;
+			this->idCodeLabel->Location = System::Drawing::Point(10, 92);
+			this->idCodeLabel->Name = L"idCodeLabel";
+			this->idCodeLabel->Size = System::Drawing::Size(54, 16);
+			this->idCodeLabel->TabIndex = 7;
+			this->idCodeLabel->Text = L"Id Code";
+			// 
+			// idCodeInput
+			// 
+			this->idCodeInput->Location = System::Drawing::Point(110, 86);
+			this->idCodeInput->Name = L"idCodeInput";
+			this->idCodeInput->Size = System::Drawing::Size(240, 22);
+			this->idCodeInput->TabIndex = 8;
 			// 
 			// MainForm
 			// 
@@ -302,6 +369,7 @@ namespace coursework {
 			this->menuStrip2->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridActive))->EndInit();
 			this->splitContainer1->Panel1->ResumeLayout(false);
+			this->splitContainer1->Panel1->PerformLayout();
 			this->splitContainer1->Panel2->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->splitContainer1))->EndInit();
 			this->splitContainer1->ResumeLayout(false);
@@ -317,7 +385,11 @@ namespace coursework {
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 		tableActive = createTable(dataGridActive);
 		tableDeleted = createTable(dataGridDeleted);
-		std::vector<Employee> allRecords = this->repo->findAll();
+		//std::vector<Employee> allRecords = this->repo->findAll();
+		Employee mask;
+		mask.setFirstName(Utils::toStandardString(this->firstNameInput->Text));
+		mask.setLastName(Utils::toStandardString(this->secondNameInput->Text));
+		std::vector<Employee> allRecords = this->repo->findEmployees(mask);
 		for (auto& emp : allRecords) {
 			array<System::Object^>^ rowData = toRow(emp);
 			if (emp.isDeleted()) {

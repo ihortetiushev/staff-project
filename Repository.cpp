@@ -164,3 +164,20 @@ Employee Repository::getById(int id) {
 	}
 	return found->second;
 }
+std::vector<Employee> Repository::findEmployees(Employee toFind) {
+	std::vector<Employee> found;
+	for (auto &it : this->empolyees) {
+		//bool candidate = false;
+		if (toFind.getFirstName().length() != 0 &&
+			it.second.getFirstName() != toFind.getFirstName()) {
+			continue;
+		}
+		if (toFind.getLastName().length() != 0 &&
+			it.second.getLastName() != toFind.getLastName()) {
+			continue;
+		}
+		found.push_back(it.second);
+
+	}
+	return found;
+}
