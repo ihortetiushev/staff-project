@@ -472,7 +472,7 @@ namespace coursework {
 		DataTable^ table = gcnew DataTable();
 		table->Columns->Add(gcnew DataColumn("Id", Type::GetType("System.Int32")));
 		table->Columns->Add(gcnew DataColumn("First Name", Type::GetType("System.String")));
-		table->Columns->Add(gcnew DataColumn("Second Name", Type::GetType("System.String")));
+		table->Columns->Add(gcnew DataColumn("Last Name", Type::GetType("System.String")));
 		table->Columns->Add(gcnew DataColumn("Id Code", Type::GetType("System.String")));
 		table->Columns->Add(gcnew DataColumn("Birth Date", Type::GetType("System.String")));
 
