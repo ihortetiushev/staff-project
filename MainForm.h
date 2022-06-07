@@ -83,6 +83,11 @@ namespace coursework {
 	private: System::Windows::Forms::Label^ searchLabel;
 	private: System::Windows::Forms::DateTimePicker^ birthDatePicker;
 	private: System::Windows::Forms::Label^ labelBirthDate;
+	private: System::Windows::Forms::StatusStrip^ statusStrip;
+	private: System::Windows::Forms::ToolStripStatusLabel^ toolStripStatusLabel1;
+
+
+
 
 
 	private: System::ComponentModel::IContainer^ components;
@@ -124,6 +129,8 @@ namespace coursework {
 			this->tabPageActive = (gcnew System::Windows::Forms::TabPage());
 			this->tabPageDeleted = (gcnew System::Windows::Forms::TabPage());
 			this->dataGridDeleted = (gcnew System::Windows::Forms::DataGridView());
+			this->statusStrip = (gcnew System::Windows::Forms::StatusStrip());
+			this->toolStripStatusLabel1 = (gcnew System::Windows::Forms::ToolStripStatusLabel());
 			this->menuStrip2->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridActive))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->splitContainer1))->BeginInit();
@@ -134,6 +141,7 @@ namespace coursework {
 			this->tabPageActive->SuspendLayout();
 			this->tabPageDeleted->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridDeleted))->BeginInit();
+			this->statusStrip->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// searchButton
@@ -159,9 +167,9 @@ namespace coursework {
 			// menuStrip1
 			// 
 			this->menuStrip1->ImageScalingSize = System::Drawing::Size(20, 20);
-			this->menuStrip1->Location = System::Drawing::Point(0, 28);
+			this->menuStrip1->Location = System::Drawing::Point(0, 30);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(827, 24);
+			this->menuStrip1->Size = System::Drawing::Size(827, 30);
 			this->menuStrip1->TabIndex = 3;
 			this->menuStrip1->Text = L"menuStrip1";
 			// 
@@ -219,7 +227,7 @@ namespace coursework {
 			});
 			this->menuStrip2->Location = System::Drawing::Point(0, 0);
 			this->menuStrip2->Name = L"menuStrip2";
-			this->menuStrip2->Size = System::Drawing::Size(827, 28);
+			this->menuStrip2->Size = System::Drawing::Size(827, 30);
 			this->menuStrip2->TabIndex = 4;
 			this->menuStrip2->Text = L"menuStrip2";
 			// 
@@ -241,14 +249,14 @@ namespace coursework {
 			this->dataGridActive->RowTemplate->Height = 24;
 			this->dataGridActive->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
 			this->dataGridActive->SelectionMode = System::Windows::Forms::DataGridViewSelectionMode::FullRowSelect;
-			this->dataGridActive->Size = System::Drawing::Size(809, 308);
+			this->dataGridActive->Size = System::Drawing::Size(809, 289);
 			this->dataGridActive->TabIndex = 0;
 			// 
 			// splitContainer1
 			// 
 			this->splitContainer1->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
 			this->splitContainer1->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->splitContainer1->Location = System::Drawing::Point(0, 52);
+			this->splitContainer1->Location = System::Drawing::Point(0, 60);
 			this->splitContainer1->Name = L"splitContainer1";
 			this->splitContainer1->Orientation = System::Windows::Forms::Orientation::Horizontal;
 			// 
@@ -269,8 +277,8 @@ namespace coursework {
 			// splitContainer1.Panel2
 			// 
 			this->splitContainer1->Panel2->Controls->Add(this->tabControl);
-			this->splitContainer1->Size = System::Drawing::Size(827, 566);
-			this->splitContainer1->SplitterDistance = 215;
+			this->splitContainer1->Size = System::Drawing::Size(827, 534);
+			this->splitContainer1->SplitterDistance = 202;
 			this->splitContainer1->TabIndex = 5;
 			// 
 			// birthDatePicker
@@ -366,7 +374,7 @@ namespace coursework {
 			this->tabControl->Location = System::Drawing::Point(0, 0);
 			this->tabControl->Name = L"tabControl";
 			this->tabControl->SelectedIndex = 0;
-			this->tabControl->Size = System::Drawing::Size(823, 343);
+			this->tabControl->Size = System::Drawing::Size(823, 324);
 			this->tabControl->TabIndex = 0;
 			// 
 			// tabPageActive
@@ -375,7 +383,7 @@ namespace coursework {
 			this->tabPageActive->Location = System::Drawing::Point(4, 25);
 			this->tabPageActive->Name = L"tabPageActive";
 			this->tabPageActive->Padding = System::Windows::Forms::Padding(3);
-			this->tabPageActive->Size = System::Drawing::Size(815, 314);
+			this->tabPageActive->Size = System::Drawing::Size(815, 295);
 			this->tabPageActive->TabIndex = 0;
 			this->tabPageActive->Text = L"Active";
 			this->tabPageActive->UseVisualStyleBackColor = true;
@@ -386,7 +394,7 @@ namespace coursework {
 			this->tabPageDeleted->Location = System::Drawing::Point(4, 25);
 			this->tabPageDeleted->Name = L"tabPageDeleted";
 			this->tabPageDeleted->Padding = System::Windows::Forms::Padding(3);
-			this->tabPageDeleted->Size = System::Drawing::Size(815, 314);
+			this->tabPageDeleted->Size = System::Drawing::Size(815, 301);
 			this->tabPageDeleted->TabIndex = 1;
 			this->tabPageDeleted->Text = L"Deleted";
 			this->tabPageDeleted->UseVisualStyleBackColor = true;
@@ -405,8 +413,23 @@ namespace coursework {
 			this->dataGridDeleted->RowHeadersWidth = 51;
 			this->dataGridDeleted->RowTemplate->Height = 24;
 			this->dataGridDeleted->SelectionMode = System::Windows::Forms::DataGridViewSelectionMode::FullRowSelect;
-			this->dataGridDeleted->Size = System::Drawing::Size(809, 308);
+			this->dataGridDeleted->Size = System::Drawing::Size(809, 295);
 			this->dataGridDeleted->TabIndex = 0;
+			// 
+			// statusStrip
+			// 
+			this->statusStrip->ImageScalingSize = System::Drawing::Size(20, 20);
+			this->statusStrip->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->toolStripStatusLabel1 });
+			this->statusStrip->Location = System::Drawing::Point(0, 594);
+			this->statusStrip->Name = L"statusStrip";
+			this->statusStrip->Size = System::Drawing::Size(827, 24);
+			this->statusStrip->TabIndex = 6;
+			this->statusStrip->Text = L"statusStrip";
+			// 
+			// toolStripStatusLabel1
+			// 
+			this->toolStripStatusLabel1->Name = L"toolStripStatusLabel1";
+			this->toolStripStatusLabel1->Size = System::Drawing::Size(0, 18);
 			// 
 			// MainForm
 			// 
@@ -416,6 +439,7 @@ namespace coursework {
 			this->Controls->Add(this->splitContainer1);
 			this->Controls->Add(this->menuStrip1);
 			this->Controls->Add(this->menuStrip2);
+			this->Controls->Add(this->statusStrip);
 			this->MainMenuStrip = this->menuStrip1;
 			this->Name = L"MainForm";
 			this->Text = L"Staff";
@@ -432,6 +456,8 @@ namespace coursework {
 			this->tabPageActive->ResumeLayout(false);
 			this->tabPageDeleted->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridDeleted))->EndInit();
+			this->statusStrip->ResumeLayout(false);
+			this->statusStrip->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -448,16 +474,31 @@ namespace coursework {
 			mask.setBirthDate(Utils::toStandardString(this->birthDatePicker->Text));
 		}		
 		std::vector<Employee> allRecords = this->repo->findEmployees(mask);
+		int activeCount = 0;
+		int deletedCount = 0;
 		for (auto& emp : allRecords) {
 			array<System::Object^>^ rowData = toRow(emp);
 			if (emp.isDeleted()) {
 				tableDeleted->LoadDataRow(rowData, true);
+				deletedCount++;
 			}
 			else {
 				tableActive->LoadDataRow(rowData, true);
+				activeCount++;
 			}
 		}
-
+		String^ totalText = "Total records: " + allRecords.size();
+		String^ activeText = " Active: " + activeCount;
+		String^ deletedText = " Deleted: " + deletedCount;
+		Color color;
+		if (allRecords.size() == 0) {
+			color = Color::DarkRed;
+		}
+		else {
+			color = Color::DarkBlue;
+		}
+		statusStrip->ForeColor = color;
+		statusStrip->Items[0]->Text = totalText + activeText + deletedText;
 	}
 	private: array<System::Object^>^ toRow(Employee emp) {
 		array<System::Object^>^ values = gcnew array< System::Object^ >(5);
