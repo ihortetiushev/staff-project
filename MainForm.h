@@ -181,10 +181,10 @@ namespace coursework {
 			});
 			this->menuStrip1->Location = System::Drawing::Point(0, 28);
 			this->menuStrip1->Name = L"menuStrip1";
+			this->menuStrip1->ShowItemToolTips = true;
 			this->menuStrip1->Size = System::Drawing::Size(827, 28);
 			this->menuStrip1->TabIndex = 3;
 			this->menuStrip1->Text = L"menuStrip1";
-			this->menuStrip1->ShowItemToolTips = true;
 			// 
 			// toolStripMenuItem1
 			// 
@@ -237,21 +237,21 @@ namespace coursework {
 			// newEmployeeToolStripMenuItem
 			// 
 			this->newEmployeeToolStripMenuItem->Name = L"newEmployeeToolStripMenuItem";
-			this->newEmployeeToolStripMenuItem->Size = System::Drawing::Size(206, 26);
+			this->newEmployeeToolStripMenuItem->Size = System::Drawing::Size(226, 26);
 			this->newEmployeeToolStripMenuItem->Text = L"New Employee";
 			this->newEmployeeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::newEmployeeToolStripMenuItem_Click);
 			// 
 			// editEmployeeToolStripMenuItem
 			// 
 			this->editEmployeeToolStripMenuItem->Name = L"editEmployeeToolStripMenuItem";
-			this->editEmployeeToolStripMenuItem->Size = System::Drawing::Size(206, 26);
-			this->editEmployeeToolStripMenuItem->Text = L"Edit Employee";
+			this->editEmployeeToolStripMenuItem->Size = System::Drawing::Size(226, 26);
+			this->editEmployeeToolStripMenuItem->Text = L"View/Edit Employee";
 			this->editEmployeeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::editEmployeeToolStripMenuItem_Click);
 			// 
 			// deleteEmployeeToolStripMenuItem
 			// 
 			this->deleteEmployeeToolStripMenuItem->Name = L"deleteEmployeeToolStripMenuItem";
-			this->deleteEmployeeToolStripMenuItem->Size = System::Drawing::Size(206, 26);
+			this->deleteEmployeeToolStripMenuItem->Size = System::Drawing::Size(226, 26);
 			this->deleteEmployeeToolStripMenuItem->Text = L"Delete Employee";
 			this->deleteEmployeeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::deleteEmployeeToolStripMenuItem_Click);
 			// 
@@ -431,7 +431,7 @@ namespace coursework {
 			this->tabPageDeleted->Location = System::Drawing::Point(4, 25);
 			this->tabPageDeleted->Name = L"tabPageDeleted";
 			this->tabPageDeleted->Padding = System::Windows::Forms::Padding(3);
-			this->tabPageDeleted->Size = System::Drawing::Size(815, 297);
+			this->tabPageDeleted->Size = System::Drawing::Size(815, 300);
 			this->tabPageDeleted->TabIndex = 1;
 			this->tabPageDeleted->Text = L"Deleted";
 			this->tabPageDeleted->UseVisualStyleBackColor = true;
@@ -450,7 +450,7 @@ namespace coursework {
 			this->dataGridDeleted->RowHeadersWidth = 51;
 			this->dataGridDeleted->RowTemplate->Height = 24;
 			this->dataGridDeleted->SelectionMode = System::Windows::Forms::DataGridViewSelectionMode::FullRowSelect;
-			this->dataGridDeleted->Size = System::Drawing::Size(809, 291);
+			this->dataGridDeleted->Size = System::Drawing::Size(809, 294);
 			this->dataGridDeleted->TabIndex = 0;
 			// 
 			// statusStrip

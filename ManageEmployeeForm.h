@@ -124,11 +124,10 @@ namespace coursework {
 			this->lastNameInput->Size = System::Drawing::Size(290, 22);
 			this->lastNameInput->TabIndex = 3;
 			this->lastNameInput->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &ManageEmployee::inputText_KeyDown);
-
 			// 
 			// okButton
 			// 
-			this->okButton->Location = System::Drawing::Point(45, 365);
+			this->okButton->Location = System::Drawing::Point(44, 222);
 			this->okButton->Name = L"okButton";
 			this->okButton->Size = System::Drawing::Size(150, 35);
 			this->okButton->TabIndex = 8;
@@ -138,7 +137,7 @@ namespace coursework {
 			// 
 			// cancelButton
 			// 
-			this->cancelButton->Location = System::Drawing::Point(281, 365);
+			this->cancelButton->Location = System::Drawing::Point(281, 222);
 			this->cancelButton->Name = L"cancelButton";
 			this->cancelButton->Size = System::Drawing::Size(150, 35);
 			this->cancelButton->TabIndex = 9;
@@ -197,8 +196,8 @@ namespace coursework {
 			this->Controls->Add(this->lastNameLabel);
 			this->Controls->Add(this->firstNameInput);
 			this->Controls->Add(this->firstNameLabel);
-			this->MaximumSize = System::Drawing::Size(500, 500);
-			this->MinimumSize = System::Drawing::Size(500, 500);
+			this->MaximumSize = System::Drawing::Size(500, 350);
+			this->MinimumSize = System::Drawing::Size(500, 350);
 			this->Name = L"ManageEmployee";
 			this->Text = L"Create New Employee";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &ManageEmployee::CreateEmployee_FormClosing);
