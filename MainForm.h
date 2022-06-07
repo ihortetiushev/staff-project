@@ -2,6 +2,7 @@
 #include "ManageEmployeeForm.h"
 #include "Repository.h"
 #include "Utils.h"
+#include "UIState.h"
 
 namespace coursework {
 
@@ -12,6 +13,11 @@ namespace coursework {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
+	const Int32 ID_INDEX = 0;
+	const Int32 FIRST_NAME_INDEX = 1;
+	const Int32 LAST_NAME_INDEX = 2;
+	const Int32 ID_CODE_INDEX = 3;
+	const Int32 BIRTH_DATE_INDEX = 4;
 	public ref class MainForm : public System::Windows::Forms::Form
 	{
 	public:
@@ -20,6 +26,7 @@ namespace coursework {
 			InitializeComponent();
 			this->StartPosition = FormStartPosition::CenterScreen;
 			this->repo = repo;
+			this->uiState = gcnew UIState();
 		}
 
 	protected:
@@ -38,6 +45,7 @@ namespace coursework {
 		Repository* repo;
 		DataTable^ tableActive;
 		DataTable^ tableDeleted;
+		UIState^ uiState;
 	protected:
 
 
@@ -314,11 +322,11 @@ namespace coursework {
 	}
     private: array<System::Object^>^ toRow(Employee emp) {
 		array<System::Object^>^ values = gcnew array< System::Object^ >(5);
-		values[0] = emp.getId();
-		values[1] = Utils::toSystemString(emp.getFirstName());
-		values[2] = Utils::toSystemString(emp.getLastName());
-		values[3] = Utils::toSystemString(emp.getIdCode());
-		values[4] = Utils::toSystemString(emp.getBirthDate());
+		values[ID_INDEX] = emp.getId();
+		values[FIRST_NAME_INDEX] = Utils::toSystemString(emp.getFirstName());
+		values[LAST_NAME_INDEX] = Utils::toSystemString(emp.getLastName());
+		values[ID_CODE_INDEX] = Utils::toSystemString(emp.getIdCode());
+		values[BIRTH_DATE_INDEX] = Utils::toSystemString(emp.getBirthDate());
 		return values;
 	}
 	private: DataTable^ createTable(System::Windows::Forms::DataGridView^ dataGrid) {
@@ -330,11 +338,11 @@ namespace coursework {
 		table->Columns->Add(gcnew DataColumn("Birth Date", Type::GetType("System.String")));
 
 		dataGrid->DataSource = table;
-		dataGrid->Columns[0]->Visible = false;//first column - id invisible
-		dataGrid->Columns[1]->AutoSizeMode = DataGridViewAutoSizeColumnMode::Fill;
-		dataGrid->Columns[2]->AutoSizeMode = DataGridViewAutoSizeColumnMode::Fill;
-		dataGrid->Columns[3]->AutoSizeMode = DataGridViewAutoSizeColumnMode::Fill;
-		dataGrid->Columns[4]->AutoSizeMode = DataGridViewAutoSizeColumnMode::Fill;
+		dataGrid->Columns[ID_INDEX]->Visible = false;//first column - id invisible
+		dataGrid->Columns[FIRST_NAME_INDEX]->AutoSizeMode = DataGridViewAutoSizeColumnMode::Fill;
+		dataGrid->Columns[LAST_NAME_INDEX]->AutoSizeMode = DataGridViewAutoSizeColumnMode::Fill;
+		dataGrid->Columns[ID_CODE_INDEX]->AutoSizeMode = DataGridViewAutoSizeColumnMode::Fill;
+		dataGrid->Columns[BIRTH_DATE_INDEX]->AutoSizeMode = DataGridViewAutoSizeColumnMode::Fill;
 		return table;
 	}
 	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -350,8 +358,10 @@ namespace coursework {
 		Application::Exit();
 	}
 	private: System::Void newEmployeeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-		ManageEmployee manageEmployeeDlg(this->repo, nullptr);
+		UIState^ state = gcnew UIState();
+		ManageEmployee manageEmployeeDlg(this->repo, nullptr, state);
 		manageEmployeeDlg.ShowDialog();
+		refreshGridData(state);
 	}
 	private: System::Void MainForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
 		if (!Utils::isConfirmed(L"Exit application?")) {
@@ -365,11 +375,12 @@ namespace coursework {
 			MessageBox::Show(L"No data selected for editing", L"Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			return;
 		}
-		Object^ objId = activeGrid->CurrentRow->Cells[0]->Value;
+		Object^ objId = activeGrid->CurrentRow->Cells[ID_INDEX]->Value;
 		Employee toEdit = this->repo->getById(safe_cast<int>(objId));
-		ManageEmployee mangeEmployeeDlg(this->repo, &toEdit);
+		UIState^ state = gcnew UIState();
+		ManageEmployee mangeEmployeeDlg(this->repo, &toEdit, state);
 		mangeEmployeeDlg.ShowDialog();
-		refreshGridData();
+		refreshGridData(state);
 		
 	}
 	private:  DataGridView^ getActiveGrid() {
@@ -382,18 +393,26 @@ namespace coursework {
 		}
 		return activeGrid;
 	}
-    private: void refreshGridData() {
-		int id = 1;//todo read latest updated data
+    private: void refreshGridData(UIState^ state) {
+		if (state->getLastOperation() == Operation::CANCEL) {
+			return;
+		}
+		Int32 id = state->getLastModifiedId();
 		DataGridView^ activeGrid = getActiveGrid();
-		if (activeGrid->RowCount > 0){
+		if (activeGrid->RowCount > 0) {
 			for (int i = 0; i < activeGrid->RowCount; i++) {
-				auto idObj = activeGrid->Rows[i]->Cells[0]->Value;
-				if (id == safe_cast<int>(idObj)) {
+				auto idObj = activeGrid->Rows[i]->Cells[ID_INDEX]->Value;
+				if (id.Equals(idObj)) {
 					Employee employee = this->repo->getById(id);
-					//update
-					//activeGrid->Rows[i]->Cells[2]->Value = Utils::toSystemString(employee.getLastName());
-					//delete
-					// activeGrid->Rows->RemoveAt(activeGrid->Rows[i]->Index);
+					if (state->getLastOperation() == Operation::UPDATE) {
+						activeGrid->Rows[i]->Cells[FIRST_NAME_INDEX]->Value = Utils::toSystemString(employee.getFirstName());
+						activeGrid->Rows[i]->Cells[LAST_NAME_INDEX]->Value = Utils::toSystemString(employee.getLastName());
+						activeGrid->Rows[i]->Cells[ID_CODE_INDEX]->Value = Utils::toSystemString(employee.getIdCode());
+						activeGrid->Rows[i]->Cells[BIRTH_DATE_INDEX]->Value = Utils::toSystemString(employee.getBirthDate());
+					}
+					else if (state->getLastOperation() == Operation::DELETE) {
+						activeGrid->Rows->RemoveAt(activeGrid->Rows[i]->Index);
+					}
 					break;
 				}
 			}

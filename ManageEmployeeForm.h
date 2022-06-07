@@ -2,6 +2,7 @@
 #include "Employee.h"
 #include "Utils.h"
 #include "Repository.h"
+#include "UIState.h"
 
 
 namespace coursework {
@@ -19,13 +20,13 @@ namespace coursework {
 	public ref class ManageEmployee : public System::Windows::Forms::Form
 	{
 	public:
-		ManageEmployee(Repository* repo, Employee* toEdit)
+		ManageEmployee(Repository* repo, Employee* toEdit, UIState^ uiState)
 		{
 			InitializeComponent();
 			this->StartPosition = FormStartPosition::CenterParent;
 			this->repo = repo;
 			this->toEdit = toEdit;
-			
+			this->uiState = uiState;
 			populateEditingData();
 		}
 
@@ -44,7 +45,7 @@ namespace coursework {
 		Repository* repo;
 		Employee* toEdit;
 		bool unsavedChanges = true;
-
+		UIState^ uiState;
 	private: System::Windows::Forms::Label^ firstNameLabel;
 	private: System::Windows::Forms::TextBox^ firstNameInput;
 	protected:
@@ -210,11 +211,14 @@ namespace coursework {
 			if (this->toEdit == nullptr) {
 				//create mode
 				repo->createEmployee(employee);
+				uiState->setLastOperation(Operation::CREATE);
 			} else {
 				//edit mode
 				repo->updateEmployee(employee);
+				uiState->setLastOperation(Operation::UPDATE);
 			}
 			unsavedChanges = false;
+			uiState->setLastModifiedId(employee.getId());
 			ManageEmployee::Close();
 		}
 		catch (std::invalid_argument& error) {
@@ -247,6 +251,7 @@ namespace coursework {
 	private: System::Void CreateEmployee_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
 		if (unsavedChanges && !Utils::isConfirmed(L"Quit without saving?")) {
 			e->Cancel = true;
+			uiState->setLastOperation(Operation::CANCEL);
 		}
 	}
 	private: void populateEditingData() {

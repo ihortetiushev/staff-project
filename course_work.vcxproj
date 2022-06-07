@@ -125,6 +125,7 @@
     <ClCompile Include="Employee.cpp" />
     <ClCompile Include="MainForm.cpp" />
     <ClCompile Include="Repository.cpp" />
+    <ClCompile Include="UIState.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +137,7 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="Repository.h" />
+    <ClInclude Include="UIState.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
