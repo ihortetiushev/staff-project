@@ -487,11 +487,15 @@ namespace coursework {
 				activeCount++;
 			}
 		}
-		String^ totalText = "Total records: " + allRecords.size();
+		setStatusText(allRecords.size(), activeCount, deletedCount);
+	}
+	private:  void setStatusText(int totalCount, int activeCount, int deletedCount)
+	{
+		String^ totalText = "Total records: " + totalCount;
 		String^ activeText = " Active: " + activeCount;
 		String^ deletedText = " Deleted: " + deletedCount;
 		Color color;
-		if (allRecords.size() == 0) {
+		if (totalCount == 0) {
 			color = Color::DarkRed;
 		}
 		else {
