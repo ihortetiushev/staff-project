@@ -41,10 +41,10 @@ namespace coursework {
 				delete components;
 			}
 		}
-	private: 
+	private:
 		Repository* repo;
 		Employee* toEdit;
-		bool unsavedChanges = true;
+		bool unsavedChanges = false;
 		UIState^ uiState;
 	private: System::Windows::Forms::Label^ firstNameLabel;
 	private: System::Windows::Forms::TextBox^ firstNameInput;
@@ -106,6 +106,7 @@ namespace coursework {
 			this->firstNameInput->Name = L"firstNameInput";
 			this->firstNameInput->Size = System::Drawing::Size(290, 22);
 			this->firstNameInput->TabIndex = 1;
+			this->firstNameInput->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &ManageEmployee::inputText_KeyDown);
 			// 
 			// lastNameLabel
 			// 
@@ -122,6 +123,8 @@ namespace coursework {
 			this->lastNameInput->Name = L"lastNameInput";
 			this->lastNameInput->Size = System::Drawing::Size(290, 22);
 			this->lastNameInput->TabIndex = 3;
+			this->lastNameInput->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &ManageEmployee::inputText_KeyDown);
+
 			// 
 			// okButton
 			// 
@@ -158,6 +161,7 @@ namespace coursework {
 			this->idCodeInput->Name = L"idCodeInput";
 			this->idCodeInput->Size = System::Drawing::Size(290, 22);
 			this->idCodeInput->TabIndex = 5;
+			this->idCodeInput->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &ManageEmployee::inputText_KeyDown);
 			// 
 			// birthDatePicker
 			// 
@@ -167,6 +171,7 @@ namespace coursework {
 			this->birthDatePicker->Name = L"birthDatePicker";
 			this->birthDatePicker->Size = System::Drawing::Size(117, 22);
 			this->birthDatePicker->TabIndex = 6;
+			this->birthDatePicker->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &ManageEmployee::birthDatePicker_MouseDown);
 			// 
 			// birthDateLabel
 			// 
@@ -177,7 +182,7 @@ namespace coursework {
 			this->birthDateLabel->TabIndex = 7;
 			this->birthDateLabel->Text = L"Birth Date";
 			// 
-			// CreateEmployee
+			// ManageEmployee
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
@@ -194,7 +199,7 @@ namespace coursework {
 			this->Controls->Add(this->firstNameLabel);
 			this->MaximumSize = System::Drawing::Size(500, 500);
 			this->MinimumSize = System::Drawing::Size(500, 500);
-			this->Name = L"CreateEmployee";
+			this->Name = L"ManageEmployee";
 			this->Text = L"Create New Employee";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &ManageEmployee::CreateEmployee_FormClosing);
 			this->ResumeLayout(false);
@@ -205,14 +210,15 @@ namespace coursework {
 	private: System::Void cancelButton_Click(System::Object^ sender, System::EventArgs^ e) {
 		ManageEmployee::Close();
 	}
-    private: void saveEmployee() {
+	private: void saveEmployee() {
 		Employee employee = toModel();
 		try {
 			if (this->toEdit == nullptr) {
 				//create mode
 				repo->createEmployee(employee);
 				uiState->setLastOperation(Operation::CREATE);
-			} else {
+			}
+			else {
 				//edit mode
 				repo->updateEmployee(employee);
 				uiState->setLastOperation(Operation::UPDATE);
@@ -230,7 +236,7 @@ namespace coursework {
 		}
 	}
 	private: System::Void okButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		saveEmployee();		
+		saveEmployee();
 	}
 	private: Employee toModel() {
 		Employee employee;
@@ -245,7 +251,7 @@ namespace coursework {
 		employee.setLastName(Utils::toStandardString(this->lastNameInput->Text));
 		employee.setIdCode(Utils::toStandardString(this->idCodeInput->Text));
 		employee.setBirthDate(Utils::toStandardString(this->birthDatePicker->Text));
-		
+
 		return employee;
 	}
 	private: System::Void CreateEmployee_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
@@ -261,8 +267,24 @@ namespace coursework {
 			this->lastNameInput->Text = Utils::toSystemString(toEdit->getLastName());
 			this->idCodeInput->Text = Utils::toSystemString(toEdit->getIdCode());
 			this->birthDatePicker->Text = Utils::toSystemString(toEdit->getBirthDate());
+			if (toEdit->isDeleted()) {
+				this->Text = L"View Employee";
+				this->firstNameInput->Enabled = false;
+				this->lastNameInput->Enabled = false;
+				this->idCodeInput->Enabled = false;
+				this->birthDatePicker->Enabled = false;
+				this->unsavedChanges = false;
+			}
 		}
 	}
-};
+	private: System::Void inputText_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+		unsavedChanges = true;
+	}
+
+	private: System::Void birthDatePicker_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+		unsavedChanges = true;
+	}
+
+	};
 
 }

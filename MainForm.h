@@ -526,6 +526,8 @@ namespace coursework {
 				activeCount++;
 			}
 		}
+		dataGridActive->Columns[ID_INDEX]->Visible = false;
+		dataGridDeleted->Columns[ID_INDEX]->Visible = false;
 		setStatusText(allRecords.size(), activeCount, deletedCount);
 	}
 	private:  void setStatusText(int totalCount, int activeCount, int deletedCount)
