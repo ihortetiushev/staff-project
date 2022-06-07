@@ -4,6 +4,10 @@
 #include <ostream>
 #include <fstream>
 #include <vector>
+#include <iostream>
+#include <iomanip>
+#include <ctime>
+#include <sstream>
 
 
 Employee* findByByIdCode(std::map<int, Employee> & data, std::string idCode) {
@@ -16,7 +20,14 @@ Employee* findByByIdCode(std::map<int, Employee> & data, std::string idCode) {
 	}
 	return found;
 }
-
+std::string getCurrent() {
+	auto t = std::time(nullptr);
+	auto tm = *std::localtime(&t);
+	std::ostringstream oss;
+	oss << std::put_time(&tm, "%d.%m.%Y %H:%M:%S");
+	auto str = oss.str();
+	return str;
+}
 Employee Repository::createEmployee(Employee toCreate) {
 	validateEmployee(toCreate);
 	if (toCreate.getId() != 0) {
@@ -27,6 +38,9 @@ Employee Repository::createEmployee(Employee toCreate) {
 		throw std::invalid_argument("Employee with this id code already exists");
 	}
 	toCreate.setId(empolyees.size() + 1);
+	std::string current = getCurrent();
+	toCreate.setCreatedAt(current);
+	toCreate.setUpdatedAt(current);
 	empolyees.insert({ toCreate.getId() ,toCreate });
 	saveEmpolyeesToFile(EMPLOYEES_DATA);
 	return toCreate;
@@ -41,6 +55,7 @@ Employee Repository::updateEmployee(Employee toUpdate) {
 	if (existing != nullptr && existing->getId() != toUpdate.getId()) {
 		throw std::invalid_argument("Another employee with this id code already exists");
 	}
+	toUpdate.setUpdatedAt(getCurrent());
 	empolyees[toUpdate.getId()] = toUpdate;
 	saveEmpolyeesToFile(EMPLOYEES_DATA);
 	return toUpdate;
@@ -55,6 +70,7 @@ Employee Repository::deleteEmployee(int id) {
 		throw std::invalid_argument("Employee is deleted already");
 	}
 	existing->second.setDeleted(true);
+	existing->second.setUpdatedAt(getCurrent());
 	empolyees[id] = existing->second;
 	saveEmpolyeesToFile(EMPLOYEES_DATA);
 	return  existing->second;
@@ -110,6 +126,8 @@ void Repository::saveEmpolyeesToFile(std::string fileName) {
 		writeStringToFile(it.second.getFirstName(), ofs);
 		writeStringToFile(it.second.getLastName(), ofs);
 		writeStringToFile(it.second.getBirthDate(), ofs);
+		writeStringToFile(it.second.getCreatedAt(), ofs);
+		writeStringToFile(it.second.getUpdatedAt(), ofs);
 		writeIntToFile(it.second.isDeleted(), ofs);
 	}
 	ofs.close();
@@ -140,6 +158,12 @@ void Repository::readEmpolyeesFromFile() {
 			strLength = readIntFromFile(file);
 			std::string birthDate = readStringFromFile(file, strLength);
 			next.setBirthDate(birthDate);
+			strLength = readIntFromFile(file);
+			std::string createdAt = readStringFromFile(file, strLength);
+			next.setCreatedAt(createdAt);
+			strLength = readIntFromFile(file);
+			std::string updatedAt = readStringFromFile(file, strLength);
+			next.setUpdatedAt(updatedAt);
 			bool isDeleted = readIntFromFile(file);
 			next.setDeleted(isDeleted);
 			empolyees.insert({ next.getId(), next });

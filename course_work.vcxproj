@@ -123,12 +123,14 @@
     <ClCompile Include="CreateEmployee.cpp" />
     <ClCompile Include="CreateEmployeeForm.cpp" />
     <ClCompile Include="Employee.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="MainForm.cpp" />
     <ClCompile Include="Repository.cpp" />
     <ClCompile Include="UIState.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="ManageEmployeeForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
